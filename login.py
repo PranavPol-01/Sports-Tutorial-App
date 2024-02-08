@@ -38,10 +38,11 @@ def sign_in():
 
     if username == "admin" and password == "pswd":
         Messagebox.show_info("Login Successful", "Welcome, " + username + "!")
-        
+        root.destroy()
+        subprocess.run(["python", "recommendation.py"])
     else:
         Messagebox.show_error("Login Failed", "Invalid username or password")
-    root.destroy()
+    
 
 root = Tk()
 root.title('Login')

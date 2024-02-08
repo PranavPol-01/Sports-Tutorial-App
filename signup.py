@@ -34,6 +34,7 @@ def navigate_to_login():
 def sign_up():
     Messagebox.show_info("Sign Up", "Sign Up Successful!")
     root.destroy()
+    subprocess.run(["python", "recommendation.py"])
 
 root = Tk()
 root.title('Sign Up')

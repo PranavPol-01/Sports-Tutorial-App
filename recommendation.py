@@ -1,15 +1,12 @@
-
 from tkinter import *
 import math
-
-
-
 from ttkbootstrap.widgets import Button, Entry, Label, Frame
+from ttkbootstrap.widgets import Meter
 from PIL import Image, ImageTk
-
 import math
 from tkinter import ttk
 from ttkbootstrap import Style
+import subprocess
 
 # Define the features and properties of the sports
 sports = [
@@ -76,24 +73,91 @@ def recommend_sports(selected_age_group):
     top_3_indices = sorted(range(len(similarity_scores)), key=lambda i: similarity_scores[i], reverse=True)[:3]
     return [sports[i] for i in top_3_indices]
 
+user_course_details = {
+    "course_name": "Badminton",
+    "instructor": "student 1",
+    "duration": "6 weeks"
+}
+
 # Create a user interface with tkinter
 root = Tk()
 root.title("Sports Recommendation System")
-root.geometry("600x400")
+root.geometry('925x500+300+200')
 
 # Create a ttkbootstrap style
-style = Style(theme="darkly")
+style = Style(theme="superhero")
 
-title_label = ttk.Label(root, text="Sports Recommendation System", font=("Arial", 24))
+# Create a frame to contain all widgets
+main_frame = Frame(root)
+main_frame.pack(fill=BOTH, expand=YES)
+
+course_name_label = ttk.Label(main_frame, text="Course Name: " + user_course_details["course_name"], font=("Arial", 14))
+course_name_label.pack(pady=5)
+
+instructor_label = ttk.Label(main_frame, text="Instructor: " + user_course_details["instructor"], font=("Arial", 14))
+instructor_label.pack(pady=5)
+
+duration_label = ttk.Label(main_frame, text="Duration: " + user_course_details["duration"], font=("Arial", 14))
+duration_label.pack(pady=5)
+
+# Define a separator to visually separate the course details from the recommendation section
+separator = ttk.Separator(main_frame, orient='horizontal')
+separator.pack(fill='x', padx=20, pady=20)
+
+# Create a canvas widget to contain the recommendation widgets
+canvas = Canvas(main_frame)
+canvas.pack(side=LEFT, fill=BOTH, expand=YES)
+
+# Add a scrollbar to the root window
+scrollbar = Scrollbar(root, orient=VERTICAL, command=canvas.yview)
+scrollbar.pack(side=RIGHT, fill=Y, expand=YES)
+
+# Configure the canvas to scroll with the scrollbar
+canvas.configure(yscrollcommand=scrollbar.set)
+canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
+
+# Create another frame inside the canvas to contain the recommendation widgets
+recommendation_frame = Frame(canvas)
+canvas.create_window((0, 0), window=recommendation_frame, anchor='nw')
+
+# Create the meter widget
+meter = Meter(
+    recommendation_frame,
+    metersize=180,
+    padding=5,
+    amountused=25,
+    metertype="semi",
+    subtext="miles per hour",
+    interactive=True,
+)
+meter.pack()
+
+# Update the subtext
+meter.configure(subtext="Loading...")
+
+# Update the amount used directly
+meter.configure(amountused=50)
+
+# Create an entry widget to update the amount used
+entry = ttk.Entry(recommendation_frame, textvariable=meter.amountusedvar)
+entry.pack(fill='x', pady=10)
+
+# Increment the amount by 10 steps
+meter.step(10)
+
+# Decrement the amount by 15 steps
+meter.step(-15)
+
+title_label = ttk.Label(recommendation_frame, text="Sports Recommendation System", font=("Arial", 24))
 title_label.pack(pady=20)
 
-instruction_label = ttk.Label(root, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16))
+instruction_label = ttk.Label(recommendation_frame, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16))
 instruction_label.pack(pady=10)
 
-age_group_combobox = ttk.Combobox(root, values=["Children (5-12 years)", "Teenagers (13-18 years)", "Adults (19-64 years)", "Older Adults (65 years and older)"], font=("Arial", 14), state="readonly")
+age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (5-12 years)", "Teenagers (13-18 years)", "Adults (19-64 years)", "Older Adults (65 years and older)"], font=("Arial", 14), state="readonly")
 age_group_combobox.pack(pady=10)
 
-recommendation_label = ttk.Label(root, text="", font=("Arial", 14))
+recommendation_label = ttk.Label(recommendation_frame, text="", font=("Arial", 14))
 recommendation_label.pack(pady=10)
 
 def show_recommendations():
@@ -107,7 +171,7 @@ def show_recommendations():
     else:
         recommendation_label.config(text="Please select a valid age group.")
 
-recommend_button = ttk.Button(root, text="Recommend", style="primary.TButton", command=show_recommendations)
+recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="primary.TButton", command=show_recommendations)
 recommend_button.pack(pady=10)
 
 # Start the main loop
