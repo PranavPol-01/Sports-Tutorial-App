@@ -5,6 +5,8 @@ from ttkbootstrap import Style
 from ttkbootstrap.widgets import Button, Entry, Label, Frame
 from PIL import Image, ImageTk
 import subprocess
+import sqlite3
+import hashlib
 
 # Toggle password visibility
 def toggle_password_visibility(event=None):
@@ -32,7 +34,24 @@ def navigate_to_login():
 
 
 def sign_up():
-    Messagebox.show_info("Sign Up", "Sign Up Successful!")
+    email = emailid.get()
+    username = user.get()
+    password = code.get()
+    try:
+        conn = sqlite3.connect('Form.db')
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO users(email, username, password) VALUES(?, ?, ?)
+        """, (email, username, hashed_password))
+        conn.commit()
+        conn.close()
+        Messagebox.show_info("Sign Up Successful!", "Sign Up")
+    except Exception as e:
+        print(e)
+        Messagebox.show_error("Sign Up Failed", "An error occurred while signing up")
+        return   
+    
     root.destroy()
     subprocess.run(["python", "recommendation.py"])
 

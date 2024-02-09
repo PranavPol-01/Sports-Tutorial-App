@@ -6,6 +6,8 @@ from ttkbootstrap import Style
 from ttkbootstrap.widgets import Button, Entry, Frame
 from ttkbootstrap.dialogs import Messagebox
 import subprocess
+import sqlite3
+import hashlib
 
 # Toggle password visibility
 def toggle_password_visibility():
@@ -27,21 +29,50 @@ def clear_entry(event):
 # Open the signup page using subprocess
 def sign_up():
     print("Navigating to signup page...")  # Debug message    
+    print("Signup page opened")  # Debug message    
+    create_database()
     subprocess.run(["python", "signup.py"])
-    print("Signup page opened")  # Debug message
     root.destroy()
     
+def create_database():
+    conn = sqlite3.connect('Form.db')
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users(
+        email TEXT NOT NULL,                   
+        username TEXT NOT NULL,
+        password TEXT NOT NULL
+    )""")
+    conn.commit()
+    conn.close()
+    print("Database created successfully!")
 
 def sign_in():
     username = user.get()
     password = code.get()
 
-    if username == "admin" and password == "pswd":
-        Messagebox.show_info("Login Successful", "Welcome, " + username + "!")
-        root.destroy()
-        subprocess.run(["python", "recommendation.py"])
+    # Hash the password entered by the user
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    conn = sqlite3.connect('Form.db')
+    cursor = conn.cursor()
+
+    # Fetch the hashed password from the database
+    cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+    result = cursor.fetchone()
+
+    if result is not None:
+        db_password = result[0]
+        if db_password == hashed_password:
+            Messagebox.show_info( "Welcome, " + username + "!","Login Successful")
+            root.destroy()
+            subprocess.run(["python", "recommendation.py"])
+        else:
+            Messagebox.show_error("Invalid username or password","Login Failed")
     else:
-        Messagebox.show_error("Login Failed", "Invalid username or password")
+        Messagebox.show_error("Invalid username or password","Login Failed")
+
+    conn.close()
     
 
 root = Tk()
