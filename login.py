@@ -42,7 +42,8 @@ def create_database():
         CREATE TABLE IF NOT EXISTS users(
         email TEXT NOT NULL,                   
         username TEXT NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        token TEXT
     )""")
     conn.commit()
     conn.close()
@@ -51,7 +52,7 @@ def create_database():
 def sign_in():
     username = user.get()
     password = code.get()
-
+    
     
     # Hash the password entered by the user
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
@@ -76,6 +77,10 @@ def sign_in():
 
     conn.close()
     
+
+def reset_password():
+    subprocess.run(["python", "reset_password.py"])
+    root.destroy()
 
 root = Tk()
 root.title('Login')
@@ -145,6 +150,8 @@ label.place(x=60, y=250)
 sign_up_button = Button(login_frame, width=7, text='Sign up', command=sign_up)
 sign_up_button.place(x=210, y=250)
 
+reset_password_button = Button(login_frame, width=20, text='Reset Password', padding='7',command=reset_password)
+reset_password_button.place(x=100, y=300)
 # Map foreground color for Entry widget
 style.map('TEntry', foreground=[
     ('disabled', 'gray'),
