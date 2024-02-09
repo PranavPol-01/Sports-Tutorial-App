@@ -9,6 +9,7 @@ import subprocess
 import sqlite3
 import hashlib
 
+
 # Toggle password visibility
 def toggle_password_visibility():
     global show_password
@@ -51,6 +52,7 @@ def sign_in():
     username = user.get()
     password = code.get()
 
+    
     # Hash the password entered by the user
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
 

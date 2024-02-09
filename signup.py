@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 import subprocess
 import sqlite3
 import hashlib
+import re
 
 # Toggle password visibility
 def toggle_password_visibility(event=None):
@@ -33,12 +34,32 @@ def navigate_to_login():
     root.destroy()
 
 
+def is_valid_email(email):
+    # Regular expression for validating an Email
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+
+    # If the string is empty, it's not a valid email
+    if email == "":
+        return False
+
+    # If the string matches the regular expression, it's a valid email
+    if re.fullmatch(regex, email):
+        return True
+    else:
+        return False
+
+
+
 def sign_up():
     email = emailid.get()
     username = user.get()
     password = code.get()
     try:
         conn = sqlite3.connect('Form.db')
+        if not is_valid_email(email):
+            Messagebox.show_error("Invalid email address. Please enter a valid email.","Invalid Email")
+            print("Invalid email address. Please enter a valid email.")
+            return
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
         cursor = conn.cursor()
         cursor.execute("""
