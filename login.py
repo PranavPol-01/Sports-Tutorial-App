@@ -87,7 +87,7 @@ image_frame = Frame(root, width=400, height=500, bootstyle="dark")
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = r"./assets/Data_security_01.jpg"  # Adjust the path to your image
 login_image = Image.open(image_path)
 login_image = login_image.resize((400, 500))  # Resize the image to fit the frame
 login_image = ImageTk.PhotoImage(login_image)
