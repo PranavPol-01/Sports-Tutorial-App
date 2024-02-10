@@ -32,8 +32,9 @@ def sign_up():
     print("Navigating to signup page...")  # Debug message    
     print("Signup page opened")  # Debug message    
     create_database()
-    subprocess.run(["python", "signup.py"])
     root.destroy()
+    subprocess.run(["python", "signup.py"])
+    
     
 def create_database():
     conn = sqlite3.connect('Form.db')
@@ -48,6 +49,9 @@ def create_database():
     conn.commit()
     conn.close()
     print("Database created successfully!")
+
+def navigate_to_recommendation(username):
+    subprocess.run(["python", "recommendation.py", username])
 
 def sign_in():
     username = user.get()
@@ -69,7 +73,7 @@ def sign_in():
         if db_password == hashed_password:
             Messagebox.show_info( "Welcome, " + username + "!","Login Successful")
             root.destroy()
-            subprocess.run(["python", "recommendation.py"])
+            navigate_to_recommendation(username)
         else:
             Messagebox.show_error("Invalid username or password","Login Failed")
     else:
@@ -79,8 +83,9 @@ def sign_in():
     
 
 def reset_password():
-    subprocess.run(["python", "reset_password.py"])
     root.destroy()
+    subprocess.run(["python", "reset_password.py"])
+   
 
 root = Tk()
 root.title('Login')
@@ -94,7 +99,7 @@ image_frame = Frame(root, width=400, height=500, bootstyle="dark")
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = r"./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
 login_image = Image.open(image_path)
 login_image = login_image.resize((400, 500))  # Resize the image to fit the frame
 login_image = ImageTk.PhotoImage(login_image)
