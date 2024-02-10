@@ -173,6 +173,170 @@
 
 # # Start the main loop
 # root.mainloop()
+
+
+#--------------------------------------------------------------------------------------------------------------------------------------------
+# import tkinter as tk
+# import math
+# from ttkbootstrap.widgets import Button, Entry, Label, Frame
+# from ttkbootstrap.widgets import Meter
+# from PIL import Image, ImageTk
+# import math
+# from tkinter import ttk
+# from ttkbootstrap import Style
+# import subprocess
+# from ttkbootstrap.scrolled import ScrolledFrame
+# import pandas as pd  # Import pandas module
+# import sqlite3
+# from openpyxl.workbook import Workbook
+
+# # Load data from Excel file
+# df = pd.read_excel('sports.xlsx')
+
+# # Store data in SQLite database
+# conn = sqlite3.connect('sports.db')
+# df.to_sql('sports', conn, if_exists='replace', index=False)
+
+# # Global variable to store the username
+# current_user = None
+
+
+# def get_recommendations(preferences):
+#     conn = sqlite3.connect('sports.db')
+#     cursor = conn.cursor()
+#     cursor.execute(f"SELECT [{preferences}] FROM sports")
+#     recommendations = cursor.fetchall()
+#     conn.close()
+#     return recommendations
+
+# def show_recommendation_cards(recommendations):
+#     for i, recommendation in enumerate(recommendations):
+#         # Create a frame for the recommendation card
+#         card_frame = ttk.Frame(cards_frame)
+#         card_frame.grid(row=i // 2, column=i % 2, padx=10, pady=10, sticky="nsew")
+
+#         # Add a label to display the recommendation
+#         recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("Arial", 12))
+#         recommendation_label.pack()
+
+# # Create a user interface with tkinter
+# root = tk.Tk()
+# root.title("Sports Recommendation System")
+# root.geometry('925x500+300+200')
+
+# # Create a ttkbootstrap style
+# style = Style(theme="superhero")
+
+# # Create a frame to contain all widgets
+# main_frame = ScrolledFrame(root)
+# main_frame.pack(fill=tk.BOTH, expand=tk.YES)
+
+# style.configure("Inverted.TLabel", background=style.colors.dark, foreground=style.colors.light)
+
+# # Create a frame for the header with a specified height and inverted colors
+# header_frame = ttk.Frame(main_frame, height=100)
+# header_frame.pack(fill='x')
+
+
+# # Create the main label with inverted colors
+# welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Courier New', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
+# welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+# # Adjust position of the main label to create the shadow effect
+# welcome_label.lift() 
+
+# separator = ttk.Separator(main_frame, orient='horizontal')
+# separator.pack(fill='x', padx=20, pady=20)
+
+
+# # Create a frame for the course details
+# course_d_frame = ttk.Frame(main_frame, padding=10, borderwidth=2, relief="solid", height=400, width=400)
+# course_d_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
+
+# # Add a meter showing the course completion progress
+# course_completion_meter = Meter(course_d_frame, metersize=100, padding=5, amountused=25, metertype="semi", subtext="current course")
+# course_completion_meter.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+
+# # Create a frame for course details
+# course_details_frame = ttk.Frame(course_d_frame, padding=10, borderwidth=2, relief="solid", height=200, width=200)
+# course_details_frame.grid(row=0, column=1, padx=10, pady=10, sticky='w')
+
+# # Add labels for course details
+# course_name_label = ttk.Label(course_details_frame, text="Course Name: Badminton", font=("Arial", 14))
+# course_name_label.grid(row=0, column=0, pady=5, sticky='w')
+
+# instructor_label = ttk.Label(course_details_frame, text="Instructor: sapp", font=("Arial", 14))
+# instructor_label.grid(row=1, column=0, pady=5, sticky='w')
+
+# duration_label = ttk.Label(course_details_frame, text="Duration: 6 weeks", font=("Arial", 14))
+# duration_label.grid(row=2, column=0, pady=5, sticky='w')
+
+
+
+
+# # Separator between course details and recommendations
+# separator = ttk.Separator(main_frame, orient='horizontal')
+# separator.pack(fill='x', padx=20, pady=20)
+
+
+# recommendation_frame = Frame(main_frame)
+# recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
+
+# meter = Meter(
+#     recommendation_frame,
+#     metersize=180,
+#     padding=5,
+#     amountused=25,
+#     metertype="semi",
+#     subtext="miles per hour",
+#     interactive=True,
+# )
+
+
+
+
+
+# title_label = ttk.Label(recommendation_frame, text="Sports Recommendation System", font=("Arial", 24))
+# title_label.pack(pady=20)
+
+# instruction_label = ttk.Label(recommendation_frame, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16))
+# instruction_label.pack(pady=10)
+
+# age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 0-12):", "Teenagers (Ages 13-19):", "Young Adults (Ages 20-39):", "Middle-Aged Adults (Ages 40-59):", "Older Adults (Ages 60+):"], font=("Arial", 14), state="readonly")
+# age_group_combobox.pack(pady=10)
+
+# cards_frame = ttk.Frame(main_frame)
+# cards_frame.pack(padx=10, pady=10)
+
+# recommendation_label = ttk.Label(recommendation_frame, text="", font=("Arial", 14))
+# recommendation_label.pack(pady=10)
+
+# def show_recommendations():
+#     selected_age_group = age_group_combobox.get()
+#     if selected_age_group:
+#         recommendations = get_recommendations(selected_age_group)
+#         recommendation_text = f"Recommendations for {selected_age_group}:\n"
+#         if recommendations:
+#             show_recommendation_cards(recommendations)
+#             # for recommendation in recommendations:
+#             #     recommendation_text += f"- {recommendation}\n"  # Fetch the first element of the tuple
+#         else:
+#             recommendation_text += "No recommendations found for the selected age group."
+#         recommendation_label.config(text=recommendation_text)
+#     else:
+#         recommendation_label.config(text="Please select an age group.")
+
+
+# recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="primary.TButton", command=show_recommendations)
+# recommend_button.pack(pady=10)
+
+# root.mainloop()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------------------------------
 import tkinter as tk
 import math
 from ttkbootstrap.widgets import Button, Entry, Label, Frame
@@ -186,6 +350,25 @@ from ttkbootstrap.scrolled import ScrolledFrame
 import pandas as pd  # Import pandas module
 import sqlite3
 from openpyxl.workbook import Workbook
+
+from PIL import Image, ImageDraw
+
+def create_rounded_rectangle(width, height, radius, color):
+    image = Image.new("RGBA", (width, height))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0, 0, width, height), fill=color)
+    draw.pieslice((0, 0, 2 * radius, 2 * radius), 180, 270, fill=color)
+    draw.pieslice((width - 2 * radius, 0, width, 2 * radius), 270, 360, fill=color)
+    draw.pieslice((0, height - 2 * radius, 2 * radius, height), 90, 180, fill=color)
+    draw.pieslice((width - 2 * radius, height - 2 * radius, width, height), 0, 90, fill=color)
+    draw.rectangle((radius, 0, width - radius, height), fill=color)
+    draw.rectangle((0, radius, width, height - radius), fill=color)
+    return image
+
+
+root = tk.Tk()
+root.title("Sports Recommendation System")
+root.geometry('925x500+300+200')
 
 # Load data from Excel file
 df = pd.read_excel('sports.xlsx')
@@ -206,20 +389,57 @@ def get_recommendations(preferences):
     conn.close()
     return recommendations
 
+
+rounded_rectangle_image = create_rounded_rectangle(200, 100, 10, "lightblue")
+
+# Convert the PIL image to Tkinter-compatible image
+rounded_rectangle_photo = ImageTk.PhotoImage(rounded_rectangle_image)
+
+# Define a rounded frame style
+style = ttk.Style()
+style.element_create("Rounded.Frame", "image", rounded_rectangle_photo, border=0, sticky="nsew")
+style.layout("Rounded.TFrame", [("Rounded.Frame", {"sticky": "nsew"})])
+
+def navigate_to_next_page(sport):
+    # You can pass the username to the next page here
+    print(f"Navigating to the next page for {sport} with username: {current_user}")
+
+# Create a function to display recommendation cards
 def show_recommendation_cards(recommendations):
+    # Clear existing recommendation frames
+    for widget in cards_frame.winfo_children():
+        widget.destroy()
+
+    # Define background color for recommendation frames
+    bg_color = style.lookup("Inverted.TLabel", "background")
+
     for i, recommendation in enumerate(recommendations):
         # Create a frame for the recommendation card
-        card_frame = ttk.Frame(cards_frame)
-        card_frame.grid(row=i // 2, column=i % 2, padx=10, pady=10, sticky="nsew")
+        card_frame = ttk.Frame(cards_frame, height=300, padding=(60,5), style="Inverted.TLabel",borderwidth=20, relief="solid")
+        card_frame.grid(row=i, column=0, padx=10, pady=10, sticky="nsew")
+
+        # Add a colored label behind the frame
+        background_label = ttk.Label(card_frame, background=bg_color)
+        background_label.place(relwidth=1, relheight=1)
 
         # Add a label to display the recommendation
-        recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("Arial", 12))
+        recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("helvetica", 18))
         recommendation_label.pack()
 
+        # Add a button to navigate to the next page
+        navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
+        navigate_button.pack(pady=5, padx=10)
+
+# Add a custom style for the rounded frame
+
+
+
+
+
+
+
 # Create a user interface with tkinter
-root = tk.Tk()
-root.title("Sports Recommendation System")
-root.geometry('925x500+300+200')
+
 
 # Create a ttkbootstrap style
 style = Style(theme="superhero")
@@ -229,11 +449,33 @@ main_frame = ScrolledFrame(root)
 main_frame.pack(fill=tk.BOTH, expand=tk.YES)
 
 style.configure("Inverted.TLabel", background=style.colors.dark, foreground=style.colors.light)
+style.configure("Sidebar.TButton", font=("Arial", 15), width=15)
+
+# Create a frame for the sidebar
+sidebar_frame = ttk.Frame(main_frame,   padding=20,style="Inverted.TLabel", borderwidth=12, )
+sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
+
+# Add components to the sidebar
+sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
+sidebar_label.pack(pady=10)
+button_width = 20
+
+sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton")
+sidebar_button1.pack(pady=5)
+
+sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton")
+sidebar_button2.pack(pady=5)
+
+sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton")
+sidebar_button3.pack(pady=5)
+
+# Create a frame for the content
+content_frame = ttk.Frame(main_frame)
+content_frame.pack(fill=tk.BOTH, expand=tk.YES)
 
 # Create a frame for the header with a specified height and inverted colors
-header_frame = ttk.Frame(main_frame, height=100)
+header_frame = ttk.Frame(content_frame, height=100)
 header_frame.pack(fill='x')
-
 
 # Create the main label with inverted colors
 welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Courier New', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
@@ -242,12 +484,11 @@ welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 # Adjust position of the main label to create the shadow effect
 welcome_label.lift() 
 
-separator = ttk.Separator(main_frame, orient='horizontal')
+separator = ttk.Separator(content_frame, orient='horizontal')
 separator.pack(fill='x', padx=20, pady=20)
 
-
 # Create a frame for the course details
-course_d_frame = ttk.Frame(main_frame, padding=10, borderwidth=2, relief="solid", height=400, width=400)
+course_d_frame = ttk.Frame(content_frame, padding=10, borderwidth=2, relief="solid", height=400, width=400)
 course_d_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
 
 # Add a meter showing the course completion progress
@@ -268,15 +509,11 @@ instructor_label.grid(row=1, column=0, pady=5, sticky='w')
 duration_label = ttk.Label(course_details_frame, text="Duration: 6 weeks", font=("Arial", 14))
 duration_label.grid(row=2, column=0, pady=5, sticky='w')
 
-
-
-
 # Separator between course details and recommendations
-separator = ttk.Separator(main_frame, orient='horizontal')
+separator = ttk.Separator(content_frame, orient='horizontal')
 separator.pack(fill='x', padx=20, pady=20)
 
-
-recommendation_frame = Frame(main_frame)
+recommendation_frame = Frame(content_frame)
 recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
 
 meter = Meter(
@@ -289,10 +526,6 @@ meter = Meter(
     interactive=True,
 )
 
-
-
-
-
 title_label = ttk.Label(recommendation_frame, text="Sports Recommendation System", font=("Arial", 24))
 title_label.pack(pady=20)
 
@@ -302,7 +535,7 @@ instruction_label.pack(pady=10)
 age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 0-12):", "Teenagers (Ages 13-19):", "Young Adults (Ages 20-39):", "Middle-Aged Adults (Ages 40-59):", "Older Adults (Ages 60+):"], font=("Arial", 14), state="readonly")
 age_group_combobox.pack(pady=10)
 
-cards_frame = ttk.Frame(main_frame)
+cards_frame = ttk.Frame(content_frame)
 cards_frame.pack(padx=10, pady=10)
 
 recommendation_label = ttk.Label(recommendation_frame, text="", font=("Arial", 14))
@@ -315,16 +548,14 @@ def show_recommendations():
         recommendation_text = f"Recommendations for {selected_age_group}:\n"
         if recommendations:
             show_recommendation_cards(recommendations)
-            # for recommendation in recommendations:
-            #     recommendation_text += f"- {recommendation}\n"  # Fetch the first element of the tuple
         else:
             recommendation_text += "No recommendations found for the selected age group."
         recommendation_label.config(text=recommendation_text)
     else:
         recommendation_label.config(text="Please select an age group.")
 
-
-recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="primary.TButton", command=show_recommendations)
+recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="Sidebar.TButton", command=show_recommendations)
 recommend_button.pack(pady=10)
 
 root.mainloop()
+
