@@ -7,11 +7,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import random
 import string
-
+import hashlib
 
 def send_email(email, token):
     msg = MIMEMultipart()
-    msg['From'] = '2022.your.account@ves.ac.in' # Your email address
+    msg['From'] = '2022.your.account@ves.ac.in' # Your email address use only ves account
     msg['To'] = email
     msg['Subject'] = 'Password Reset Request'
     body = 'Your token is {}'.format(token)
@@ -41,11 +41,12 @@ def reset_password():
     email = email_entry.get()
     token = token_entry.get()
     new_password = password_entry.get()
+    hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
     conn = sqlite3.connect('Form.db')
     c = conn.cursor()
     c.execute('SELECT * FROM users WHERE email = ? AND token = ?', (email, token))
     if c.fetchone() is not None:
-        c.execute('UPDATE users SET password = ? WHERE email = ?', (new_password, email))
+        c.execute('UPDATE users SET password = ? WHERE email = ?', (hashed_password, email))
         conn.commit()
         Messagebox.show_info('Info', 'Password reset successful!')
     else:
