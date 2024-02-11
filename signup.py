@@ -51,7 +51,8 @@ def is_valid_email(email):
 
 
 def sign_up():
-    email = emailid.get()
+    global current_user
+    email = emailid.get()  # Assuming emailid is the Entry widget for email
     username = user.get()
     password = code.get()
     try:
@@ -68,13 +69,21 @@ def sign_up():
         conn.commit()
         conn.close()
         Messagebox.show_info("Sign Up Successful!", "Sign Up")
+        current_user = username  # Set current_user after successful sign up
+        print("Debug: Current user set to", current_user)
+        root.destroy()  # Close the signup window
+        navigate_to_recommendation(username)
     except Exception as e:
         print(e)
         Messagebox.show_error("Sign Up Failed", "An error occurred while signing up")
-        return   
-    
-    root.destroy()
-    subprocess.run(["python", "recommendation.py"])
+
+def navigate_to_recommendation(username):
+    global current_user
+    if current_user is not None:
+        print(f"Debug: Received username in recommendation: {current_user}")
+        subprocess.run(["python", "recommendation.py", current_user])  # Pass current_user here
+    else:
+        print("Error: Current user is not set.")
 
 root = Tk()
 root.title('Sign Up')
