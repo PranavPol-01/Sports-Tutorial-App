@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from ttkbootstrap import Style
 import quiz
-import recommendation
-import subprocess
 
 class CongratulationsPage(tk.Tk):
     def __init__(self):
@@ -38,13 +36,8 @@ class CongratulationsPage(tk.Tk):
         self.button_frame = ttk.Frame(self)
         self.button_frame.pack(pady=30)
 
-        def on_no_thanks_button_clicked():
-            self.take_test()
-            subprocess.run(["python", "recommendation.py"])
-            #recommendation.RecommendationPage()
-
         # Deny Button with customized background and text color
-        self.take_test_button = ttk.Button(self.button_frame, text="No! Thanks", command=on_no_thanks_button_clicked, style="success.Outline")
+        self.take_test_button = ttk.Button(self.button_frame, text="No! Thanks", command=self.take_test, style="success.Outline")
         self.take_test_button.pack(side=tk.LEFT, padx=10)
 
         # # Take Test Button
@@ -53,8 +46,7 @@ class CongratulationsPage(tk.Tk):
 
         def on_take_test_button_clicked():
             self.additional_action()
-            subprocess.run(["python", "quiz.py"])
-            #quiz.QuizApp()
+            quiz.QuizApp()
 
         self.additional_button = ttk.Button(self.button_frame, text="Take Test", style="success.Outline", command=on_take_test_button_clicked)
         self.additional_button.pack(side=tk.LEFT, padx=30)
@@ -65,5 +57,5 @@ class CongratulationsPage(tk.Tk):
     def additional_action(self):
         print("Additional button clicked.")  # Placeholder for additional button functionality
 
-app = CongratulationsPage()
-app.mainloop()
+# app = CongratulationsPage()
+# app.mainloop()

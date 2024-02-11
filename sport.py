@@ -27,34 +27,6 @@ cursor = conn.cursor()
 cursor.execute("SELECT * FROM Badminton")
 sports = cursor.fetchall()
 
-# Function to dynamically adjust font size based on window size
-def adjust_font_size(event):
-    new_font_size = max(8, int(window.winfo_width() / 80))
-
-    # Iterate through all frames in the notebook
-    for frame in notebook.winfo_children():
-        # Iterate through all labels in the frame
-        for label in frame.winfo_children():
-            # Update the font size of the label
-            label.configure(font=('Arial', new_font_size))
-            label.update()
-
-# Bind the <Configure> event of the window to the adjust_font_size function
-window.bind('<Configure>', adjust_font_size)
-
-def update_text_width(event):
-    # Get the width of the notebook or window
-    width = event.width
-
-    # Calculate the wraplength based on the width
-    wrap_length = int(width * 0.8)  # Adjust the multiplier as needed
-    
-    # Update the wraplength for all labels
-    for label in [sport_name_label, sport_info_label, ...]:  # Add all your labels here
-        label.config(wraplength=wrap_length)
-
-# Bind the <Configure> event of the window or notebook to the update_text_width function
-window.bind('<Configure>', update_text_width)
 
 
 # iterate over sports data and create a page for each column in db
