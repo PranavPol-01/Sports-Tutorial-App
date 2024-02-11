@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 import CongratsPage
 
 # create a styled tk window
-style = Style('lumen')
+style = Style('superhero')
 window = style.master
 window.title("Sports")
 window.geometry("1000x700")

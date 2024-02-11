@@ -351,6 +351,7 @@ from ttkbootstrap.scrolled import ScrolledFrame
 import sqlite3
 from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
+from tkinter.scrolledtext import ScrolledText
 
 
 def create_rounded_rectangle(width, height, radius, color):
@@ -368,7 +369,12 @@ def create_rounded_rectangle(width, height, radius, color):
 
 root = tk.Tk()
 root.title("Sports Recommendation System")
-root.geometry('925x500+300+200')
+# root.geometry('925x500+300+200')
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+
+# Set the geometry of the root window to fill the screen
+root.geometry("%dx%d" % (width, height))
 
 
 # Store data in SQLite database
@@ -444,7 +450,19 @@ style = Style(theme="superhero")
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)
+
 main_frame.pack(fill=tk.BOTH, expand=tk.YES)
+
+
+# Set the geometry of the root window to fill the screen
+
+
+# Create a frame to contain all widgets
+
+
+# Pack the main_frame or do any other layout management as needed
+# main_frame.pack(fill=BOTH, expand=YES)
+
 
 style.configure("Inverted.TLabel", background=style.colors.dark, foreground=style.colors.light)
 style.configure("Sidebar.TButton", font=("Arial", 15), width=15)
