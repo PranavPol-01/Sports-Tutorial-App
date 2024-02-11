@@ -9,6 +9,7 @@ import subprocess
 import sqlite3
 import hashlib
 
+
 # Toggle password visibility
 def toggle_password_visibility():
     global show_password
@@ -31,8 +32,9 @@ def sign_up():
     print("Navigating to signup page...")  # Debug message    
     print("Signup page opened")  # Debug message    
     create_database()
-    subprocess.run(["python", "signup.py"])
     root.destroy()
+    subprocess.run(["python", "signup.py"])
+    
     
 def create_database():
     conn = sqlite3.connect('Form.db')
@@ -41,16 +43,21 @@ def create_database():
         CREATE TABLE IF NOT EXISTS users(
         email TEXT NOT NULL,                   
         username TEXT NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        token TEXT
     )""")
     conn.commit()
     conn.close()
     print("Database created successfully!")
 
+def navigate_to_recommendation(username):
+    subprocess.run(["python", "recommendation.py", username])
+
 def sign_in():
     username = user.get()
     password = code.get()
-
+    
+    
     # Hash the password entered by the user
     hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
@@ -66,7 +73,7 @@ def sign_in():
         if db_password == hashed_password:
             Messagebox.show_info( "Welcome, " + username + "!","Login Successful")
             root.destroy()
-            subprocess.run(["python", "recommendation.py"])
+            navigate_to_recommendation(username)
         else:
             Messagebox.show_error("Invalid username or password","Login Failed")
     else:
@@ -74,6 +81,11 @@ def sign_in():
 
     conn.close()
     
+
+def reset_password():
+    root.destroy()
+    subprocess.run(["python", "reset_password.py"])
+   
 
 root = Tk()
 root.title('Login')
@@ -87,7 +99,7 @@ image_frame = Frame(root, width=400, height=500, bootstyle="dark")
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = r"./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
 login_image = Image.open(image_path)
 login_image = login_image.resize((400, 500))  # Resize the image to fit the frame
 login_image = ImageTk.PhotoImage(login_image)
@@ -143,6 +155,8 @@ label.place(x=60, y=250)
 sign_up_button = Button(login_frame, width=7, text='Sign up', command=sign_up)
 sign_up_button.place(x=210, y=250)
 
+reset_password_button = Button(login_frame, width=20, text='Reset Password', padding='7',command=reset_password)
+reset_password_button.place(x=100, y=300)
 # Map foreground color for Entry widget
 style.map('TEntry', foreground=[
     ('disabled', 'gray'),

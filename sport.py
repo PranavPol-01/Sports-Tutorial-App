@@ -5,6 +5,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap import Style
 import cv2
 from PIL import Image, ImageTk
+import CongratsPage
 
 # create a styled tk window
 style = Style('lumen')
@@ -177,8 +178,6 @@ for i, sport in enumerate(sports, start=1):
     frame_4.grid_columnconfigure(1, weight=1)
     frame_4.grid_rowconfigure(0, weight=1)
 
-
-
     # frame_5 = ttk.Frame(notebook)
     # notebook.add(frame_5, text=f'Court Dimensions')
     
@@ -284,9 +283,19 @@ if current_index == 0:
         previous_button.pack_forget()
 else:
     previous_button.pack(side='left', padx=5, pady=5)
+
+
+
+def open_congrats_page():
+    app = CongratsPage.CongratulationsPage()
+
+def on_done_button_clicked():
+    window.destroy()
+    open_congrats_page()
+        
     
 next_button = ttk.Button(buttons_frame, text="Next", bootstyle="SUCCESS, OUTLINE", command=go_to_next_page)
-done_button = ttk.Button(buttons_frame, text="Done", bootstyle="SUCCESS, OUTLINE", command=window.quit)
+done_button = ttk.Button(buttons_frame, text="Done", bootstyle="SUCCESS, OUTLINE", command=on_done_button_clicked)
 if current_index == len(notebook.tabs()) - 1:
         next_button.pack_forget()
         done_button.pack(side='left', padx=5, pady=5)
