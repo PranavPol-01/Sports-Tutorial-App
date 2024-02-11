@@ -350,6 +350,11 @@ from ttkbootstrap.scrolled import ScrolledFrame
 import sqlite3
 from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
+from tkinter.scrolledtext import ScrolledText
+import sys
+
+# Get the current user from command-line arguments
+current_user = sys.argv[1]
 
 
 def create_rounded_rectangle(width, height, radius, color):
@@ -367,15 +372,28 @@ def create_rounded_rectangle(width, height, radius, color):
 
 root = tk.Tk()
 root.title("Sports Recommendation System")
-root.geometry('925x500+300+200')
+
+# root.geometry('925x500+300+200')
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+
+# Set the geometry of the root window to fill the screen
+root.geometry("%dx%d" % (width, height))
 
 
 # Store data in SQLite database
 conn = sqlite3.connect('sport.db')
 
 
+conn1 = sqlite3.connect('rules.db')
+cursor = conn1.cursor()
+cursor.execute("SELECT sport_name FROM Badminton")
+sports = cursor.fetchone()
+sports = ', '.join(sports[0].split(", "))
+conn1.close()
+print(sports)
 # Global variable to store the username
-current_user = None
+# current_user = None
 
 
 def get_recommendations(preferences):
@@ -427,13 +445,53 @@ def show_recommendation_cards(recommendations):
         navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
         navigate_button.pack(pady=5, padx=10)
 
-# Add a custom style for the rounded frame
+
+def navigate_to_next_page(sport):
+    global current_user
+    if current_user is not None:
+        # Run sports.py script with current user and selected sport as arguments
+        #subprocess.Popen(["python", "sport.py", current_user, sport])
+        root.destroy()
+        subprocess.Popen(["python", "sport.py", current_user])
+        
+    else:
+        print("Error: Current user is not set.")
+
+# Establish a connection to the database sport.db
+conn = sqlite3.connect('sport.db')
+cursor = conn.cursor()
+cursor.execute("SELECT value FROM progress WHERE ROWID = (SELECT MAX(ROWID) FROM progress)")
+row = cursor.fetchone()
+number = int(row[0])
+print(number)
+conn.close()
+
+# Define the progress status based on the number
+progress = ""
+if number == 100:
+    progress = "Completed"
+elif number == 80:
+    progress = "Almost Completed"
+elif number == 40:
+    progress = "Halfway Completed"
+elif number == 20:
+    progress = "Just Started"
+else:
+    progress= "Not Started"
 
 
+def navigate_to_recommendation():
+    print("Navigating to recommendation page...")
+    root.destroy()
+    subprocess.run(["python", "recommendation.py",current_user])
 
+def navigate_to_test():
+    print("Navigating to test page...")
+    subprocess.run(["python", "quiz.py"])
 
-
-
+def navigate_to_explore():
+    print("Navigating to explore page...")
+    subprocess.run(["python", "explore.py"])
 
 # Create a user interface with tkinter
 
@@ -443,13 +501,25 @@ style = Style(theme="lumen")
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)
+
 main_frame.pack(fill=tk.BOTH, expand=tk.YES)
+
+
+# Set the geometry of the root window to fill the screen
+
+
+# Create a frame to contain all widgets
+
+
+# Pack the main_frame or do any other layout management as needed
+# main_frame.pack(fill=BOTH, expand=YES)
+
 
 style.configure("Inverted.TLabel", background=style.colors.dark, foreground=style.colors.light)
 style.configure("Sidebar.TButton", font=("Arial", 15), width=15)
 
 # Create a frame for the sidebar
-sidebar_frame = ttk.Frame(main_frame,   padding=20,style="Inverted.TLabel", borderwidth=12, )
+sidebar_frame = ttk.Frame(main_frame,padding=20,style="Inverted.TLabel", borderwidth=12, )
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
@@ -457,13 +527,13 @@ sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
 sidebar_label.pack(pady=10)
 button_width = 20
 
-sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton")
+sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton",command=navigate_to_recommendation)
 sidebar_button1.pack(pady=5)
 
-sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton")
+sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton",command=navigate_to_test)
 sidebar_button2.pack(pady=5)
 
-sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton")
+sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton",command=navigate_to_explore)
 sidebar_button3.pack(pady=5)
 
 # Create a frame for the content
@@ -475,7 +545,7 @@ header_frame = ttk.Frame(content_frame, height=100)
 header_frame.pack(fill='x')
 
 # Create the main label with inverted colors
-welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Courier New', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
+welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Arial', 35, 'bold'))
 welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 # Adjust position of the main label to create the shadow effect
@@ -489,7 +559,7 @@ course_d_frame = ttk.Frame(content_frame, padding=10, borderwidth=2, relief="sol
 course_d_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
 
 # Add a meter showing the course completion progress
-course_completion_meter = Meter(course_d_frame, metersize=100, padding=5, amountused=25, metertype="semi", subtext="current course")
+course_completion_meter = Meter(course_d_frame, metersize=100, padding=5, amountused=f"{number}", metertype="semi", subtext=f"{progress}", interactive=True)
 course_completion_meter.grid(row=0, column=0, padx=10, pady=10, sticky='w')
 
 # Create a frame for course details
@@ -497,7 +567,7 @@ course_details_frame = ttk.Frame(course_d_frame, padding=10, borderwidth=2, reli
 course_details_frame.grid(row=0, column=1, padx=10, pady=10, sticky='w')
 
 # Add labels for course details
-course_name_label = ttk.Label(course_details_frame, text="Course Name: Badminton", font=("Arial", 14))
+course_name_label = ttk.Label(course_details_frame, text=f"Course Name: {sports}", font=("Arial", 14))
 course_name_label.grid(row=0, column=0, pady=5, sticky='w')
 
 instructor_label = ttk.Label(course_details_frame, text="Instructor: sapp", font=("Arial", 14))
@@ -515,9 +585,9 @@ recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
 
 meter = Meter(
     recommendation_frame,
-    metersize=180,
+    metersize=200,
     padding=5,
-    amountused=25,
+    amountused=f"{number}",
     metertype="semi",
     subtext="miles per hour",
     interactive=True,
