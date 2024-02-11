@@ -9,6 +9,8 @@ import subprocess
 import sqlite3
 import hashlib
 
+# current_user = None
+
 
 # Toggle password visibility
 def toggle_password_visibility():
@@ -50,10 +52,9 @@ def create_database():
     conn.close()
     print("Database created successfully!")
 
-def navigate_to_recommendation(username):
-    subprocess.run(["python", "recommendation.py", username])
 
 def sign_in():
+    global current_user
     username = user.get()
     password = code.get()
     
@@ -65,22 +66,28 @@ def sign_in():
     cursor = conn.cursor()
 
     # Fetch the hashed password from the database
-    cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+    cursor.execute("SELECT username FROM users WHERE username = ? AND password = ?", (username, hashed_password))
     result = cursor.fetchone()
 
     if result is not None:
-        db_password = result[0]
-        if db_password == hashed_password:
-            Messagebox.show_info( "Welcome, " + username + "!","Login Successful")
-            root.destroy()
-            navigate_to_recommendation(username)
-        else:
-            Messagebox.show_error("Invalid username or password","Login Failed")
+        current_user = username  # Set current_user after successful login
+        print("Debug: Current user set to", current_user)
+        Messagebox.show_info("Welcome, " + username + "!", "Login Successful")
+        root.destroy()
+        navigate_to_recommendation(username)  # Pass only username here
+        
     else:
-        Messagebox.show_error("Invalid username or password","Login Failed")
-
+        Messagebox.show_error("Invalid username or password", "Login Failed")
+        print("Debug: Login failed for username", username)
     conn.close()
-    
+
+def navigate_to_recommendation(username):
+    global current_user
+    if current_user is not None:
+        print(f"Debug: Received username in recommendation: {current_user}")
+        subprocess.run(["python", "recommendation.py", current_user])  # Pass current_user here
+    else:
+        print("Error: Current user is not set.")    
 
 def reset_password():
     root.destroy()

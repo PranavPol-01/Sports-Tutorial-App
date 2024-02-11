@@ -352,6 +352,10 @@ import sqlite3
 from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
 from tkinter.scrolledtext import ScrolledText
+import sys
+
+# Get the current user from command-line arguments
+current_user = sys.argv[1]
 
 
 def create_rounded_rectangle(width, height, radius, color):
@@ -382,7 +386,7 @@ conn = sqlite3.connect('sport.db')
 
 
 # Global variable to store the username
-current_user = None
+# current_user = None
 
 
 def get_recommendations(preferences):
@@ -434,8 +438,14 @@ def show_recommendation_cards(recommendations):
         navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
         navigate_button.pack(pady=5, padx=10)
 
-# Add a custom style for the rounded frame
 
+def navigate_to_next_page(sport):
+    global current_user
+    if current_user is not None:
+        # Run sports.py script with current user and selected sport as arguments
+        subprocess.Popen(["python", "s.py", current_user, sport])
+    else:
+        print("Error: Current user is not set.")
 
 # Establish a connection to the database sport.db
 conn = sqlite3.connect('sport.db')
@@ -456,7 +466,18 @@ else:
     progress = "Just Started"
 
 
+def navigate_to_recommendation():
+    print("Navigating to recommendation page...")
+    root.destroy()
+    subprocess.run(["python", "recommendation.py",current_user])
 
+def navigate_to_test():
+    print("Navigating to test page...")
+    subprocess.run(["python", "quiz.py"])
+
+def navigate_to_explore():
+    print("Navigating to explore page...")
+    subprocess.run(["python", "explore.py"])
 
 # Create a user interface with tkinter
 
@@ -492,13 +513,13 @@ sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
 sidebar_label.pack(pady=10)
 button_width = 20
 
-sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton")
+sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton",command=navigate_to_recommendation)
 sidebar_button1.pack(pady=5)
 
-sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton")
+sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton",command=navigate_to_test)
 sidebar_button2.pack(pady=5)
 
-sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton")
+sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton",command=navigate_to_explore)
 sidebar_button3.pack(pady=5)
 
 # Create a frame for the content
