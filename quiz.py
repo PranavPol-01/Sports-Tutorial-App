@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from ttkbootstrap import Style
 from tkinter import messagebox
-
+from tkinter import ttk
 
 # Define the quiz questions and answers
 quiz_questions = [
@@ -24,12 +24,12 @@ quiz_questions = [
     {
         "question": "Is Badminton a Indoor or Outdoor sport?",
         "choices": [ "Indoor","Outdoor", "Both", "None of the above"],
-        "answer": "Yes"
+        "answer": "Indoor"
     },
     {
         "question": "when serving in badminton, the birdie must be hit below the waist.",
         "choices": ["True ", "False", "Maybe", "I don't know"],
-        "answer": "P.V Sindhu"
+        "answer": "True"
     }
 ]
 
@@ -42,10 +42,10 @@ class QuizApp(tk.Tk):
         self.question_label = tk.Label(self, text="Question")
         self.question_label.pack(pady=10)
         self.choices = tk.StringVar()
-        self.choice_buttons = [tk.Radiobutton(self, text="", variable=self.choices, value=choice) for choice in range(4)]
+        self.choice_buttons = [ttk.Radiobutton(self, text="", variable=self.choices, value=choice) for choice in range(4)]
         for btn in self.choice_buttons:
             btn.pack(pady=5)
-        self.submit_button = tk.Button(text="Submit", command=self.check_answer)
+        self.submit_button = ttk.Button(text="Submit", command=self.check_answer)
         self.submit_button.pack(pady=5)
         self.questions = quiz_questions
         self.count = 0
@@ -67,14 +67,14 @@ class QuizApp(tk.Tk):
 
     def check_answer(self):
         user_answer = self.choices.get()
-        
+        count = 0
         if user_answer == self.current_question["answer"]:
             self.count+=1
         else:
             pass
         self.next_question()
 
-# if __name__ == "__main__":
-#     app = QuizApp()
-#     app.mainloop()
+if __name__ == "__main__":
+    app = QuizApp()
+    app.mainloop()
 
