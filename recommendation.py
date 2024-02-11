@@ -347,7 +347,6 @@ from tkinter import ttk
 from ttkbootstrap import Style
 import subprocess
 from ttkbootstrap.scrolled import ScrolledFrame
-
 import sqlite3
 from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
@@ -440,7 +439,7 @@ def show_recommendation_cards(recommendations):
 
 
 # Create a ttkbootstrap style
-style = Style(theme="superhero")
+style = Style(theme="lumen")
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)

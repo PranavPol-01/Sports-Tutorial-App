@@ -24,12 +24,12 @@ quiz_questions = [
     {
         "question": "Is Badminton a Indoor or Outdoor sport?",
         "choices": [ "Indoor","Outdoor", "Both", "None of the above"],
-        "answer": "Yes"
+        "answer": "Indoor"
     },
     {
         "question": "when serving in badminton, the birdie must be hit below the waist.",
         "choices": ["True ", "False", "Maybe", "I don't know"],
-        "answer": "P.V Sindhu"
+        "answer": "True"
     }
 ]
 
