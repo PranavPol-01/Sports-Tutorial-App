@@ -92,14 +92,14 @@ root.title('Login')
 root.geometry('925x500+300+200')
 root.resizable(False, False)
 
-style = Style(theme='superhero')
+style = Style(theme='lumen')
 
 # Create a frame for the image
-image_frame = Frame(root, width=400, height=500, bootstyle="dark")
+image_frame = Frame(root, width=400, height=500)
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = "./assets/authentication.png"  # Adjust the path to your image
 login_image = Image.open(image_path)
 login_image = login_image.resize((400, 500))  # Resize the image to fit the frame
 login_image = ImageTk.PhotoImage(login_image)
@@ -108,7 +108,7 @@ image_label = Label(image_frame, image=login_image)
 image_label.place(x=0, y=0)
 
 # Create the login frame
-login_frame = Frame(root, width=350, height=350, bootstyle="dark")
+login_frame = Frame(root, width=350, height=350)
 login_frame.place(x=480, y=70)
 
 heading = Label(login_frame, text='Sign in', font=('Microsoft YaHei UI Light', 23, 'bold'))

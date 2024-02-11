@@ -81,14 +81,14 @@ root.title('Sign Up')
 root.geometry('925x500+300+200')
 root.resizable(False, False)
 
-style = Style(theme='superhero')
+style = Style(theme='lumen')
 
 # Create a frame for the image
 image_frame = Frame(root, width=400, height=500, bootstyle="dark")
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = "./assets/authentication.png"  # Adjust the path to your image
 login_image = Image.open(image_path)
 login_image = login_image.resize((400, 500))  # Resize the image to fit the frame
 login_image = ImageTk.PhotoImage(login_image)
@@ -97,7 +97,7 @@ image_label = Label(image_frame, image=login_image)
 image_label.place(x=0, y=0)
 
 # Create the sign-up frame
-signup_frame = Frame(root, width=350, height=350, bootstyle="dark")
+signup_frame = Frame(root, width=350, height=350)
 signup_frame.place(x=480, y=70)
 
 heading = Label(signup_frame, text='Sign Up', font=('Microsoft YaHei UI Light', 23, 'bold'))
@@ -146,7 +146,7 @@ label.place(x=60, y=300)
 
 # Use a button to navigate to the login page
 login_button = Button(signup_frame, width=7, text='Login',  command=navigate_to_login)
-login_button.place(x=210, y=300)
+login_button.place(x=220, y=300)
 
 style.map('TEntry', foreground=[
     ('disabled', 'gray'),

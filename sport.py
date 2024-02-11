@@ -9,7 +9,7 @@ import CongratsPage
 import sqlite3
 
 # create a styled tk window
-style = Style('superhero')
+style = Style('lumen')
 window = style.master
 window.title("Sports")
 window.geometry("1000x700")
@@ -31,16 +31,18 @@ sports = cursor.fetchall()
 conn = sqlite3.connect('sport.db')
 cursor = conn.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS Progress(
+        sport_name TEXT,
         tab INTEGER,
         value INTEGER
 )""")
-cursor.execute("INSERT INTO Progress VALUES (?, ?)", (0, 0))
+cursor.execute("INSERT INTO Progress VALUES (?, ?,?)", ("", 0, 0))
 conn.commit()
 print("Database created")
 
+
 # iterate over sports data and create a page for each column in db
 
-for i, sport in enumerate(sports, start=1):
+for i, sport in enumerate(sports):
     # create a frame for each page
     frame_1 = ttk.Frame(notebook)
     notebook.add(frame_1, text=f'Introduction')

@@ -143,14 +143,14 @@ root.title('Reset Password')
 root.geometry('925x500+300+200')
 root.resizable(False, False)
 
-style = Style(theme='superhero')
+style = Style(theme='lumen')
 
 # Create the image frame
 image_frame = Frame(root, width=400, height=500, bootstyle="dark")
 image_frame.place(x=40, y=0)
 
 # Add an image to the image frame
-image_path = "./assets/Data_security_01.jpg"  # Adjust the path to your image
+image_path = "./assets/authentication.png"  # Adjust the path to your image
 reset_image = Image.open(image_path)
 reset_image = reset_image.resize((400, 500))  # Resize the image to fit the frame
 reset_image = ImageTk.PhotoImage(reset_image)
@@ -160,31 +160,31 @@ image_label.place(x=0, y=0)
 
 # Create the reset password frame
 reset_frame = Frame(root)
-reset_frame.place(x=480, y=70, width=350, height=400)
+reset_frame.place(x=480, y=70, width=550, height=700)
 
-heading = Label(reset_frame, text='reset password', font=('Microsoft YaHei UI Light', 23, 'bold'))
-heading.place(x=100, y=-15)
+heading = Label(reset_frame, text='Reset Password', font=('Microsoft YaHei UI Light', 23, 'bold'),padding=1)
+heading.place(x=90, y=-11)
 
 email_label = Label(reset_frame, text='Email', font=('Microsoft YaHei UI Light', 11))
-email_label.place(x=50, y=20)
+email_label.place(x=70, y=40)
 email_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11))
-email_entry.place(x=50, y=50)
+email_entry.place(x=70, y=70)
 
 token_label = Label(reset_frame, text='Token', font=('Microsoft YaHei UI Light', 11))
-token_label.place(x=50, y=90)
+token_label.place(x=70, y=110)
 token_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11))
-token_entry.place(x=50, y=120)
+token_entry.place(x=70, y=130)
 
 password_label = Label(reset_frame, text='New Password', font=('Microsoft YaHei UI Light', 11))
-password_label.place(x=50, y=160)
+password_label.place(x=70, y=160)
 password_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11), show='*')
-password_entry.place(x=50, y=190)
+password_entry.place(x=70, y=190)
 
 reset_password_request_button = Button(reset_frame, width=25, text='Reset Password Request', command=reset_password_request)
-reset_password_request_button.place(x=70, y=230)
+reset_password_request_button.place(x=105, y=250)
 
 reset_password_button = Button(reset_frame, width=25, text='Reset Password', command=reset_password)
-reset_password_button.place(x=70, y=270)
+reset_password_button.place(x=105, y=300)
 
 style.map('TEntry', foreground=[
     ('disabled', 'gray'),

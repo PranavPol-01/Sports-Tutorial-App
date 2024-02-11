@@ -37,7 +37,7 @@ class QuizApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Sports Quiz for Badminton")
-        self.style = Style(theme='flatly')
+        self.style = Style(theme='lumen')
         self.geometry("400x300")
         self.question_label = tk.Label(self, text="Question")
         self.question_label.pack(pady=10)

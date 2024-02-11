@@ -369,6 +369,7 @@ def create_rounded_rectangle(width, height, radius, color):
 
 root = tk.Tk()
 root.title("Sports Recommendation System")
+
 # root.geometry('925x500+300+200')
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -381,6 +382,13 @@ root.geometry("%dx%d" % (width, height))
 conn = sqlite3.connect('sport.db')
 
 
+conn1 = sqlite3.connect('rules.db')
+cursor = conn1.cursor()
+cursor.execute("SELECT sport_name FROM Badminton")
+sports = cursor.fetchone()
+sports = ', '.join(sports[0].split(", "))
+conn1.close()
+print(sports)
 # Global variable to store the username
 current_user = None
 
@@ -445,6 +453,8 @@ row = cursor.fetchone()
 number = int(row[0])
 print(number)
 conn.close()
+
+# Define the progress status based on the number
 progress = ""
 if number == 100:
     progress = "Completed"
@@ -452,8 +462,10 @@ elif number == 80:
     progress = "Almost Completed"
 elif number == 40:
     progress = "Halfway Completed"
-else:
+elif number == 20:
     progress = "Just Started"
+else:
+    progress= "Not Started"
 
 
 
@@ -462,7 +474,7 @@ else:
 
 
 # Create a ttkbootstrap style
-style = Style(theme="superhero")
+style = Style(theme='lumen')
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)
@@ -484,7 +496,7 @@ style.configure("Inverted.TLabel", background=style.colors.dark, foreground=styl
 style.configure("Sidebar.TButton", font=("Arial", 15), width=15)
 
 # Create a frame for the sidebar
-sidebar_frame = ttk.Frame(main_frame,   padding=20,style="Inverted.TLabel", borderwidth=12, )
+sidebar_frame = ttk.Frame(main_frame,padding=20,style="Inverted.TLabel", borderwidth=12, )
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
@@ -510,7 +522,7 @@ header_frame = ttk.Frame(content_frame, height=100)
 header_frame.pack(fill='x')
 
 # Create the main label with inverted colors
-welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Arial', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
+welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Arial', 35, 'bold'))
 welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 # Adjust position of the main label to create the shadow effect
@@ -532,7 +544,7 @@ course_details_frame = ttk.Frame(course_d_frame, padding=10, borderwidth=2, reli
 course_details_frame.grid(row=0, column=1, padx=10, pady=10, sticky='w')
 
 # Add labels for course details
-course_name_label = ttk.Label(course_details_frame, text="Course Name: Badminton", font=("Arial", 14))
+course_name_label = ttk.Label(course_details_frame, text=f"Course Name: {sports}", font=("Arial", 14))
 course_name_label.grid(row=0, column=0, pady=5, sticky='w')
 
 instructor_label = ttk.Label(course_details_frame, text="Instructor: sapp", font=("Arial", 14))
