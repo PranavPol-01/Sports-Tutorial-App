@@ -347,7 +347,7 @@ from tkinter import ttk
 from ttkbootstrap import Style
 import subprocess
 from ttkbootstrap.scrolled import ScrolledFrame
-import pandas as pd  # Import pandas module
+
 import sqlite3
 from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
