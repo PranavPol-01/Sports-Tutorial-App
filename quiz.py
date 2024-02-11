@@ -40,7 +40,7 @@ class QuizApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Sports Quiz for Badminton")
-        self.style = Style(theme='lumen')
+        self.style = Style(theme='superhero')
         #self.geometry("400x300")
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()

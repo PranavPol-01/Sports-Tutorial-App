@@ -12,7 +12,7 @@ class CongratulationsPage(tk.Tk):
         self.title("Congratulations")
 
         # Create a Style object to use with ttkbootstrap
-        self.style = Style(theme="lumen")
+        self.style = Style(theme="superhero")  # Set the theme to 'superhero'
 
         # Set background color to white
         self.configure(bg="#ffffff")  # White background color

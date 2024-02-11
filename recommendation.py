@@ -497,7 +497,7 @@ def navigate_to_explore():
 
 
 # Create a ttkbootstrap style
-style = Style(theme="lumen")
+style = Style(theme="superhero")
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)
