@@ -118,15 +118,15 @@ image_label.place(x=0, y=0)
 login_frame = Frame(root, width=350, height=350)
 login_frame.place(x=480, y=70)
 
-heading = Label(login_frame, text='Sign in', font=('Microsoft YaHei UI Light', 23, 'bold'))
+heading = Label(login_frame, text='Sign in', font=('Microsoft YaHei UI Light', 23, 'bold'),fg='black')
 heading.place(x=120, y=5)
 
-user = Entry(login_frame, width=25, font=('Microsoft yaHei UI Light', 11))
+user = Entry(login_frame, width=25, font=('Microsoft yaHei UI Light', 11),foreground='black')
 user.place(x=65, y=80)
 user.insert(0, 'Username')
 user.bind("<FocusIn>", clear_entry)
 
-code = Entry(login_frame, width=25, font=('Microsoft yaHei UI Light', 11), show='*')
+code = Entry(login_frame, width=25, font=('Microsoft yaHei UI Light', 11), show='*',foreground='black')
 code.place(x=65, y=130)
 code.insert(0, 'Password')
 code.bind("<FocusIn>", clear_entry)

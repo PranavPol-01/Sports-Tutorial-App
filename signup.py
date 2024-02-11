@@ -113,19 +113,19 @@ heading = Label(signup_frame, text='Sign Up', font=('Microsoft YaHei UI Light', 
 heading.place(x=120, y=5)
 
 # Email Entry
-emailid = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11))
+emailid = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11),foreground='black')
 emailid.place(x=65, y=80)
 emailid.insert(0, 'Email')
 emailid.bind("<FocusIn>", clear_entry)
 
 # Username Entry
-user = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11))
+user = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11),foreground='black')
 user.place(x=65, y=130)
 user.insert(0, 'Username')
 user.bind("<FocusIn>", clear_entry)
 
 # Password Entry
-code = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11), show='*')
+code = Entry(signup_frame, width=25, font=('Microsoft yaHei UI Light', 11), show='*',foreground='black')
 code.place(x=65, y=180)
 code.insert(0, 'Password')
 code.bind("<FocusIn>", clear_entry)
@@ -146,6 +146,7 @@ show_password_icon.place(x=305, y=185)
 show_password_icon.bind("<Button-1>", toggle_password_visibility)
 
 show_password = False
+
 
 signup_button = Button(signup_frame, width=20, text='Sign up', command=sign_up, padding='7')
 signup_button.place(x=100, y=234)

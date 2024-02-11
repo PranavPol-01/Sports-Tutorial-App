@@ -167,24 +167,24 @@ heading.place(x=90, y=-11)
 
 email_label = Label(reset_frame, text='Email', font=('Microsoft YaHei UI Light', 11))
 email_label.place(x=70, y=40)
-email_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11))
+email_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11),foreground='black')
 email_entry.place(x=70, y=70)
 
 token_label = Label(reset_frame, text='Token', font=('Microsoft YaHei UI Light', 11))
 token_label.place(x=70, y=110)
-token_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11))
-token_entry.place(x=70, y=130)
+token_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11),foreground='black')
+token_entry.place(x=70, y=140)
 
 password_label = Label(reset_frame, text='New Password', font=('Microsoft YaHei UI Light', 11))
-password_label.place(x=70, y=160)
-password_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11), show='*')
-password_entry.place(x=70, y=190)
+password_label.place(x=70, y=180)
+password_entry = Entry(reset_frame, width=30, font=('Microsoft yaHei UI Light', 11), show='*',foreground='black')
+password_entry.place(x=70, y=210)
 
 reset_password_request_button = Button(reset_frame, width=25, text='Reset Password Request', command=reset_password_request)
-reset_password_request_button.place(x=105, y=250)
+reset_password_request_button.place(x=105, y=280)
 
 reset_password_button = Button(reset_frame, width=25, text='Reset Password', command=reset_password)
-reset_password_button.place(x=105, y=300)
+reset_password_button.place(x=105, y=350)
 
 style.map('TEntry', foreground=[
     ('disabled', 'gray'),
