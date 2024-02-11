@@ -431,7 +431,23 @@ def show_recommendation_cards(recommendations):
 # Add a custom style for the rounded frame
 
 
-
+# Establish a connection to the database sport.db
+conn = sqlite3.connect('sport.db')
+cursor = conn.cursor()
+cursor.execute("SELECT value FROM progress WHERE ROWID = (SELECT MAX(ROWID) FROM progress)")
+row = cursor.fetchone()
+number = int(row[0])
+print(number)
+conn.close()
+progress = ""
+if number == 100:
+    progress = "Completed"
+elif number == 80:
+    progress = "Almost Completed"
+elif number == 40:
+    progress = "Halfway Completed"
+else:
+    progress = "Just Started"
 
 
 
@@ -476,7 +492,7 @@ header_frame = ttk.Frame(content_frame, height=100)
 header_frame.pack(fill='x')
 
 # Create the main label with inverted colors
-welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Courier New', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
+welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Arial', 35, 'bold'), style="Inverted.TLabel", borderwidth=12, relief="groove")
 welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 # Adjust position of the main label to create the shadow effect
@@ -490,7 +506,7 @@ course_d_frame = ttk.Frame(content_frame, padding=10, borderwidth=2, relief="sol
 course_d_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
 
 # Add a meter showing the course completion progress
-course_completion_meter = Meter(course_d_frame, metersize=100, padding=5, amountused=25, metertype="semi", subtext="current course")
+course_completion_meter = Meter(course_d_frame, metersize=100, padding=5, amountused=f"{number}", metertype="semi", subtext=f"{progress}", interactive=True)
 course_completion_meter.grid(row=0, column=0, padx=10, pady=10, sticky='w')
 
 # Create a frame for course details
@@ -516,9 +532,9 @@ recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
 
 meter = Meter(
     recommendation_frame,
-    metersize=180,
+    metersize=200,
     padding=5,
-    amountused=25,
+    amountused=f"{number}",
     metertype="semi",
     subtext="miles per hour",
     interactive=True,

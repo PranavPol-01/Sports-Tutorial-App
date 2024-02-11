@@ -6,6 +6,7 @@ from ttkbootstrap import Style
 import cv2
 from PIL import Image, ImageTk
 import CongratsPage
+import sqlite3
 
 # create a styled tk window
 style = Style('lumen')
@@ -27,8 +28,15 @@ cursor = conn.cursor()
 cursor.execute("SELECT * FROM Badminton")
 sports = cursor.fetchall()
 
-
-
+conn = sqlite3.connect('sport.db')
+cursor = conn.cursor()
+cursor.execute("""CREATE TABLE IF NOT EXISTS Progress(
+        tab INTEGER,
+        value INTEGER
+)""")
+cursor.execute("INSERT INTO Progress VALUES (?, ?)", (0, 0))
+conn.commit()
+print("Database created")
 
 # iterate over sports data and create a page for each column in db
 
@@ -38,25 +46,30 @@ for i, sport in enumerate(sports, start=1):
     notebook.add(frame_1, text=f'Introduction')
 
     # add sport name label
-    sport_name_label = ttk.Label(frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Arial', 20), padding=5,wraplength=590)
+    sport_name_label = ttk.Label(frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
     sport_name_label.pack()
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5,wraplength=590)
+    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5,wraplength=900)
     sport_info_label.pack()
     
     frame_2 = ttk.Frame(notebook)
     notebook.add(frame_2, text=f'Rules')
-
+    
     # add sport information label
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590)
+    sport_name_label = ttk.Label(frame_2, text='Rules', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    sport_name_label.pack()
+    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=900)
     sport_info_label.pack()
 
     frame_3 = ttk.Frame(notebook)
     notebook.add(frame_3, text=f'Change of Ends')
 
+    sport_name_label = ttk.Label(frame_3, text='Changes of Ends', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    sport_name_label.pack()
+
     # add sport information label
-    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=590)
+    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=900)
     sport_info_label.pack()
 
     
@@ -220,7 +233,10 @@ def update_progress(event):
     current_tab = notebook.index(notebook.select())
     total_tabs = len(notebook.tabs())
     new_value = (current_tab + 1) / total_tabs * 100
-
+    conn = sqlite3.connect('sport.db')
+    cursor = conn.cursor()  
+    cursor.execute("INSERT INTO Progress (tab, value) VALUES (?, ?)", (current_tab, new_value))
+    conn.commit()
     # Update the progress bar
     progressbar['value'] = new_value
 
@@ -290,8 +306,8 @@ def open_congrats_page():
     app = CongratsPage.CongratulationsPage()
 
 def on_done_button_clicked():
-    window.destroy()
     open_congrats_page()
+    window.destroy()
         
     
 next_button = ttk.Button(buttons_frame, text="Next", bootstyle="SUCCESS, OUTLINE", command=go_to_next_page)
@@ -305,6 +321,7 @@ else:
 
 # pack the notebook (this will display it)
 notebook.pack(expand=True, fill='both')
-
+# closing the connection
+conn.close()
 # start the main event loop
 window.mainloop()
