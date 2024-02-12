@@ -202,8 +202,7 @@
 
 
 import tkinter as tk
-import ttkbootstrap as ttk
-from ttkbootstrap import widgets
+from ttkbootstrap import widgets as ttk
 from PIL import Image, ImageTk
 from ttkbootstrap import style
 import quiz
