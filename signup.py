@@ -71,7 +71,7 @@ def sign_up():
         Messagebox.show_info("Sign Up Successful!", "Sign Up")
         current_user = username  # Set current_user after successful sign up
         print("Debug: Current user set to", current_user)
-        root.destroy()  # Close the signup window
+        root.destroy()  
         navigate_to_recommendation(username)
     except Exception as e:
         print(e)

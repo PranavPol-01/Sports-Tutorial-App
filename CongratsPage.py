@@ -40,6 +40,12 @@
 #         self.blue_tick_label = ttk.Label(self, image=photo, background="#ffffff")
 #         self.blue_tick_label.image = photo  # Keep a reference to the image
 #         self.blue_tick_label.pack()
+        # Green Tick Image
+        # self.blue_tick_image = tk.PhotoImage(file="./greentick.png")  # Replace with the path to your blue tick image
+        # self.resized_image = self.blue_tick_image.subsample(4,4)
+        # self.blue_tick_label = ttk.Label(self, image=self.resized_image, background="#ffffff")
+        # self.blue_tick_label.image = self.resized_image  # Keep a reference to the image
+        # self.blue_tick_label.pack()
 
 
 
@@ -206,6 +212,7 @@ from ttkbootstrap import widgets as ttk
 from PIL import Image, ImageTk
 from ttkbootstrap import style
 import quiz
+
 
 def take_test():
     print("Redirecting to the test page...")

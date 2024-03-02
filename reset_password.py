@@ -97,7 +97,7 @@ import hashlib
 
 def send_email(email, token):
     msg = MIMEMultipart()
-    msg['From'] = '2022.your.account@ves.ac.in' # Your email address use only ves account
+    msg['From'] = '2022.pranav.account@ves.ac.in' # Your email address use only ves account
     msg['To'] = email
     msg['Subject'] = 'Password Reset Request'
     body = 'Your token is {}'.format(token)

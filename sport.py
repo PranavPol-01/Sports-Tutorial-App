@@ -5,9 +5,25 @@ from ttkbootstrap.constants import *
 from ttkbootstrap import Style
 import cv2
 from PIL import Image, ImageTk
-import CongratsPage
+# import CongratsPage
 import sqlite3
 import sys
+import subprocess
+import pyttsx3  # Import the pyttsx3 library
+
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
+
+# Set properties (optional)
+engine.setProperty('rate', 150)  # Speed of speech
+engine.setProperty('volume', 0.2)
+
+def speak_text(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def stop_speaking():
+    engine.stop()
 
 # create a styled tk window
 style = Style('superhero')
@@ -54,6 +70,8 @@ for i, sport in enumerate(sports):
     sport_name_label = ttk.Label(frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Arial', 20), padding=5,wraplength=590)
     sport_name_label.pack(pady=20)
     
+     # Speak the introduction
+    window.after(1000, lambda: speak_text(sport[1]))
 
     # add sport information label
     sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5, wraplength=790)
@@ -75,7 +93,8 @@ for i, sport in enumerate(sports):
     # Convert the PIL Image to a tk.PhotoImage
     shot = ImageTk.PhotoImage(image)
 
-    
+    window.after(1000, lambda: speak_text(sport[2]))
+
     # add sport information label
     sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590, image=shot, compound='right')
     sport_name_label = ttk.Label(frame_2, text='Rules', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
@@ -88,6 +107,8 @@ for i, sport in enumerate(sports):
 
     sport_name_label = ttk.Label(frame_3, text='Changes of Ends', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
     sport_name_label.pack()
+    window.after(1000, lambda: speak_text(sport[3]))
+
 
     # add sport information label
     sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=790)
@@ -136,6 +157,7 @@ for i, sport in enumerate(sports):
 
     frame_4 = ttk.Frame(notebook)
     notebook.add(frame_4, text=f'Serving')
+    window.after(1000, lambda: speak_text(sport[4]))
 
     # create a label to display the video frames
     video_label = tk.Label(frame_4)
@@ -246,6 +268,7 @@ for i, sport in enumerate(sports):
 
     # Convert the PIL Image to a tk.PhotoImage
     dimensions = ImageTk.PhotoImage(image)
+    window.after(1000, lambda: speak_text(sport[5]))
 
     sport_info_label = ttk.Label(frame_5, text=f'{sport[5]}',font=('Arial', 14), padding=5,wraplength=590, image=dimensions, compound='right')
     sport_info_label.pack()  
@@ -261,6 +284,8 @@ def update_progress(event):
     conn.commit()
     # Update the progress bar
     progressbar['value'] = new_value
+     # Call stop_speaking() to stop the text-to-speech when tab changes
+    stop_speaking()
 
 notebook.bind('<<NotebookTabChanged>>', update_progress)
 
@@ -324,12 +349,13 @@ else:
 
 
 
-def open_congrats_page():
-    app = CongratsPage.CongratulationsPage()
+# def open_congrats_page():
+#     app = CongratsPage.CongratulationsPage()
 
 def on_done_button_clicked():
-    open_congrats_page()
+    subprocess.run(["python", "congrats.py"])
     window.destroy()
+    
         
     
 next_button = ttk.Button(buttons_frame, text="Next", bootstyle="SUCCESS, OUTLINE", command=go_to_next_page)

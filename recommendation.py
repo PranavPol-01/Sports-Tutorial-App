@@ -339,7 +339,7 @@
 #------------------------------------------------------------------------------------------------------
 import tkinter as tk
 import math
-from ttkbootstrap.widgets import Button, Entry, Label, Frame
+from ttkbootstrap.widgets import  *
 from ttkbootstrap.widgets import Meter
 from PIL import Image, ImageTk
 import math
@@ -428,22 +428,51 @@ def show_recommendation_cards(recommendations):
     # Define background color for recommendation frames
     bg_color = style.lookup("Inverted.TLabel", "background")
 
+    # Calculate number of rows and columns based on number of recommendations
+    num_rows = math.ceil(len(recommendations) / 3)
+    num_cols = 3
+
+    # Define padding and spacing for the grid
+    padx = 10
+    pady = 10
+    row_weight = 1  # Weight for row resizing
+    col_weight = 1  # Weight for column resizing
+
+    # Configure row and column weights for resizing
+    for i in range(num_rows):
+        cards_frame.rowconfigure(i, weight=row_weight)
+    for j in range(num_cols):
+        cards_frame.columnconfigure(j, weight=col_weight)
+
+    # Iterate through recommendations and place them in the grid
     for i, recommendation in enumerate(recommendations):
+        row = i // num_cols
+        col = i % num_cols
+
         # Create a frame for the recommendation card
-        card_frame = ttk.Frame(cards_frame, height=300, padding=(60,5), style="Inverted.TLabel",borderwidth=20, relief="solid")
-        card_frame.grid(row=i, column=0, padx=10, pady=10, sticky="nsew")
+        card_frame = ttk.Frame(cards_frame, padding=(padx, pady), style="Inverted.TLabel", borderwidth=2, relief="solid")
+        card_frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
 
         # Add a colored label behind the frame
         background_label = ttk.Label(card_frame, background=bg_color)
         background_label.place(relwidth=1, relheight=1)
 
         # Add a label to display the recommendation
-        recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("helvetica", 18))
-        recommendation_label.pack()
+        recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("helvetica", 14))
+        recommendation_label.pack(fill="both", expand=True)
 
         # Add a button to navigate to the next page
         navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
-        navigate_button.pack(pady=5, padx=10)
+        navigate_button.pack(side="bottom", pady=5, padx=10)
+
+    # Add empty frames to fill in the empty grid spaces, ensuring proper alignment
+    for i in range(num_rows * num_cols - len(recommendations)):
+        row = (len(recommendations) + i) // num_cols
+        col = (len(recommendations) + i) % num_cols
+
+        # Create an empty frame
+        empty_frame = ttk.Frame(cards_frame, padding=(padx, pady))
+        empty_frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
 
 
 def navigate_to_next_page(sport):
