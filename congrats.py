@@ -6,7 +6,7 @@ import subprocess
 import os
 from PIL import Image
 import sys
-username = sys.argv[1]
+# username = sys.argv[n]
 
 # # Get the directory of the current file
 # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -19,12 +19,13 @@ username = sys.argv[1]
 
 def navigate_to_test():
     print("Navigating to test page...")  # Placeholder for navigation logic
-    subprocess.run(['python3','quiz.py'])
+    root.destroy()
+    subprocess.run(['python','quiz.py'])
 
 def navigate_back():
     print("Navigating back...")  # Placeholder for navigation logic
     root.destroy()
-    subprocess.run(["python", "recommendation.py",username])
+    subprocess.run(["python", "recommendation.py"])
 
 root = Tk()
 root.title('Congratulations!')

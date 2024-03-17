@@ -52,10 +52,13 @@ def stop_speech():
     stop_speech_flag = True
 
 def volume_up():
+    global engine
     current_volume = engine.getProperty('volume')
-    engine.setProperty('volume', min(current_volume + 0.1, 1.0))
+    new_volume = min(current_volume + 0.1, 1.0)
+    engine.setProperty('volume', new_volume)
 
 def volume_down():
+    global engine
     current_volume = engine.getProperty('volume')
     engine.setProperty('volume', max(current_volume - 0.1, 0.0))
 
