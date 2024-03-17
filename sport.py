@@ -10,26 +10,69 @@ import sqlite3
 import sys
 import subprocess
 import pyttsx3  # Import the pyttsx3 library
+import threading
 
-# Initialize the text-to-speech engine
-engine = pyttsx3.init()
-
-# Set properties (optional)
-engine.setProperty('rate', 150)  # Speed of speech
-engine.setProperty('volume', 0.2)
-
-def speak_text(text):
-    engine.say(text)
-    engine.runAndWait()
-
-def stop_speaking():
-    engine.stop()
+# engine = pyttsx3.init()
 
 # create a styled tk window
 style = Style('superhero')
 window = style.master
 window.title("Sports")
 window.geometry("1000x700")
+
+# def start_speech(text):
+#     engine.say(text)
+#     engine.runAndWait()
+# # Set properties (optional)
+#     engine.setProperty('rate', 150)  # Speed of speech
+#     engine.setProperty('volume', 0.2)
+
+# def stop_speech():
+#     engine.stop()
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)  # Speed of speech
+engine.setProperty('volume', 0.2)
+
+stop_speech_flag = False
+
+def start_speech(text):
+    def run():
+        global stop_speech_flag
+        stop_speech_flag = False
+        for word in text.split('.'):
+            if stop_speech_flag:
+                break
+            engine.say(word)
+            engine.runAndWait()
+    threading.Thread(target=run).start()
+
+def stop_speech():
+    global stop_speech_flag
+    stop_speech_flag = True
+
+def volume_up():
+    current_volume = engine.getProperty('volume')
+    engine.setProperty('volume', min(current_volume + 0.1, 1.0))
+
+def volume_down():
+    current_volume = engine.getProperty('volume')
+    engine.setProperty('volume', max(current_volume - 0.1, 0.0))
+
+panel = ttk.Frame(window)
+panel.pack(side="top", fill="x")
+
+start_button = ttk.Button(panel, text="Start", command=lambda: start_speech(sport[1]))
+start_button.pack(side="left")
+
+stop_button = ttk.Button(panel, text="Stop", command=stop_speech)
+stop_button.pack(side="left")
+
+volume_up_button = ttk.Button(panel, text="Volume Up", command=volume_up)
+volume_up_button.pack(side="left")
+
+volume_down_button = ttk.Button(panel, text="Volume Down", command=volume_down)
+volume_down_button.pack(side="left")
 
 progressbar = ttk.Progressbar(window, style='success.Horizontal.TProgressbar', orient='horizontal', mode='determinate')
 progressbar.pack(fill='x')
@@ -71,7 +114,7 @@ for i, sport in enumerate(sports):
     sport_name_label.pack(pady=20)
     
      # Speak the introduction
-    window.after(1000, lambda: speak_text(sport[1]))
+    # window.after(1000, lambda: start_speech(sport[1]))
 
     # add sport information label
     sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5, wraplength=790)
@@ -93,13 +136,13 @@ for i, sport in enumerate(sports):
     # Convert the PIL Image to a tk.PhotoImage
     shot = ImageTk.PhotoImage(image)
 
-    window.after(1000, lambda: speak_text(sport[2]))
+
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590, image=shot, compound='right')
+    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590)
     sport_name_label = ttk.Label(frame_2, text='Rules', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
     sport_name_label.pack()
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=900)
+    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=900, image=shot, compound='right')
     sport_info_label.pack()
 
     frame_3 = ttk.Frame(notebook)
@@ -107,7 +150,7 @@ for i, sport in enumerate(sports):
 
     sport_name_label = ttk.Label(frame_3, text='Changes of Ends', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
     sport_name_label.pack()
-    window.after(1000, lambda: speak_text(sport[3]))
+    # window.after(1000, lambda: start_speech(sport[3]))
 
 
     # add sport information label
@@ -157,7 +200,7 @@ for i, sport in enumerate(sports):
 
     frame_4 = ttk.Frame(notebook)
     notebook.add(frame_4, text=f'Serving')
-    window.after(1000, lambda: speak_text(sport[4]))
+    # window.after(1000, lambda: start_speech(sport[4]))
 
     # create a label to display the video frames
     video_label = tk.Label(frame_4)
@@ -235,6 +278,8 @@ for i, sport in enumerate(sports):
     frame_4.grid_columnconfigure(1, weight=1)
     frame_4.grid_rowconfigure(0, weight=1)
 
+    # window.after(1000, lambda: start_speech(sport[5]))
+
     # frame_5 = ttk.Frame(notebook)
     # notebook.add(frame_5, text=f'Court Dimensions')
     
@@ -268,7 +313,7 @@ for i, sport in enumerate(sports):
 
     # Convert the PIL Image to a tk.PhotoImage
     dimensions = ImageTk.PhotoImage(image)
-    window.after(1000, lambda: speak_text(sport[5]))
+    # window.after(1000, lambda: start_speech(sport[5]))
 
     sport_info_label = ttk.Label(frame_5, text=f'{sport[5]}',font=('Arial', 14), padding=5,wraplength=590, image=dimensions, compound='right')
     sport_info_label.pack()  
@@ -284,8 +329,9 @@ def update_progress(event):
     conn.commit()
     # Update the progress bar
     progressbar['value'] = new_value
-     # Call stop_speaking() to stop the text-to-speech when tab changes
-    stop_speaking()
+
+    # Call stop_speaking() to stop the text-to-speech when tab changes
+    stop_speech()
 
 notebook.bind('<<NotebookTabChanged>>', update_progress)
 
@@ -312,6 +358,10 @@ def go_to_next_page():
 
     # select the next page
     notebook.select(next_index)
+
+    # update the start_button text
+    start_button.config(command=lambda: start_speech(sport[next_index + 1]))
+
 
     update_buttons_visibility()
 
