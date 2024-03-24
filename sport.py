@@ -15,7 +15,7 @@ import threading
 # engine = pyttsx3.init()
 
 # create a styled tk window
-style = Style('superhero')
+style = Style('lumen')
 window = style.master
 window.title("Sports")
 window.geometry("1000x700")
