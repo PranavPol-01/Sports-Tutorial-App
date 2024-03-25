@@ -156,9 +156,9 @@ for i, sport in enumerate(sports):
     # add sport information label
     # add sport name label
     # add sport information label
-    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=590)
-    sport_name_label = ttk.Label(scrolled_frame_2, text='Objective And Equipments', style='primary.TLabel',  font=('Times New Roman', 20, 'bold'), padding=30, wraplength=500)
-    sport_name_label.pack()
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=400)
+    sport_name_label = ttk.Label(scrolled_frame_2, text='Objective And Equipments', style='primary.TLabel',  font=('Times New Roman', 20, 'bold'), padding=30, wraplength=400)
+    sport_name_label.pack(padx=50)
     sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=900, image=equipments, compound='right')
     sport_info_label.pack()
 
@@ -313,8 +313,10 @@ for i, sport in enumerate(sports):
     play_video()
 
     # add sport information label
+    
+
     sport_info_label = ttk.Label(frame_4, text=f'{sport[4]}',font=('Helvetica', 16), padding=5,wraplength=590, compound='right')
-    sport_info_label.grid(row=0, column=0, sticky='nsew')
+    sport_info_label.grid(row=0, column=0, sticky='nsew',padx=180)
     #sport_info_label.pack()
     frame_4.grid_columnconfigure(0, weight=1)
     frame_4.grid_columnconfigure(1, weight=1)

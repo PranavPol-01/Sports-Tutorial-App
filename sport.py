@@ -151,20 +151,22 @@ for i, sport in enumerate(sports):
     sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=590)
     sport_name_label = ttk.Label(scrolled_frame_2, text='Objective And Equipments', style='primary.TLabel',  font=('Times New Roman', 20, 'bold'), padding=30, wraplength=500)
     sport_name_label.pack()
-    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=900, image=equipments, compound='right')
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=900, image=shot, compound='right')
     sport_info_label.pack()
 
     frame_3 = ttk.Frame(notebook)
     notebook.add(frame_3, text=f'Change of Ends')
 
-    sport_name_label = ttk.Label(frame_3, text='Changes of Ends', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    scrolled_frame_3 = ScrolledFrame(frame_3)
+    scrolled_frame_3.pack(expand=True, fill='both')
+
+    sport_name_label = ttk.Label(scrolled_frame_3, text='Rules', style='primary.TLabel', font=('Times New Roman', 24,'bold'), padding=30,wraplength=500)
     sport_name_label.pack()
-    # window.after(1000, lambda: start_speech(sport[3]))
 
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=790)
-    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=900)
+    sport_info_label = ttk.Label(scrolled_frame_3, text=f'{sport[3]}',font=('Helvetica', 16), padding=5,wraplength=790)
+    sport_info_label = ttk.Label(scrolled_frame_3, text=f'{sport[3]}',font=('Helvetica', 16), padding=5,wraplength=900)
     sport_info_label.pack()
 
     
@@ -281,7 +283,7 @@ for i, sport in enumerate(sports):
 
     # add sport information label
     sport_info_label = ttk.Label(frame_4, text=f'{sport[4]}',font=('Arial', 14), padding=5,wraplength=590, compound='right')
-    sport_info_label.grid(row=0, column=0, sticky='nsew')
+    sport_info_label.grid(row=0, column=0, sticky='nsew',padx=180)
     #sport_info_label.pack()
     frame_4.grid_columnconfigure(0, weight=1)
     frame_4.grid_columnconfigure(1, weight=1)
@@ -307,6 +309,8 @@ for i, sport in enumerate(sports):
 
     frame_5 = ttk.Frame(notebook)
     notebook.add(frame_5, text=f'Court Dimensions')
+    scrolled_frame_5 = ScrolledFrame(frame_5)
+    scrolled_frame_5.pack(expand=True, fill='both')
 
     # Load the image with PIL
     image = Image.open(".\\assets\\dimensions.png")
@@ -324,8 +328,9 @@ for i, sport in enumerate(sports):
     dimensions = ImageTk.PhotoImage(image)
     # window.after(1000, lambda: start_speech(sport[5]))
 
-    sport_info_label = ttk.Label(frame_5, text=f'{sport[5]}',font=('Arial', 14), padding=5,wraplength=590, image=dimensions, compound='right')
+    sport_info_label = ttk.Label(scrolled_frame_5, text=f'{sport[5]}',font=('Helvetica', 16), padding=5,wraplength=590, image=dimensions, compound='right')
     sport_info_label.pack()  
+
 
 def update_progress(event):
     # Calculate the new progress value based on the current tab index
