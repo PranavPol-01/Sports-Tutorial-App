@@ -13,6 +13,7 @@ import subprocess
 import pyttsx3  # Import the pyttsx3 library
 import threading
 from ttkbootstrap.scrolled import ScrolledFrame
+username = sys.argv[0]
 
 # engine = pyttsx3.init()
 

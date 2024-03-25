@@ -222,8 +222,10 @@ from tkinter import messagebox
 from tkinter import ttk
 import subprocess
 import sys
-current_user = sys.argv[1]
 from ttkbootstrap import Style
+from ttkbootstrap.scrolled import ScrolledFrame
+
+current_user = sys.argv[1]
 
 # Define the quiz questions and answers
 quiz_questions = [
@@ -251,33 +253,64 @@ quiz_questions = [
         "question": "When serving in badminton, the birdie must be hit below the waist.",
         "choices": ["True", "False", "Maybe", "I don't know"],
         "answer": "True"
+    },
+    {
+        "question": "Which country has won the most Olympic gold medals in badminton?",
+        "choices": ["China", "Indonesia", "Denmark", "South Korea"],
+        "answer": "China"
+    },
+    {
+        "question": "What is the maximum number of players on a badminton court at one time in a doubles match?",
+        "choices": ["2", "3", "4", "5"],
+        "answer": "4"
+    },
+    {
+        "question": "What is the name of the game often played in badminton warm-ups where players hit the shuttlecock back and forth over the net without letting it touch the ground?",
+        "choices": ["Rally", "Volley", "Smash", "Keepie-uppie"],
+        "answer": "Rally"
+    },
+    {
+        "question": "In badminton, what is a 'let'?",
+        "choices": ["A type of serve", "A fault", "A replay of a rally", "None of the above"],
+        "answer": "A replay of a rally"
+    },
+    {
+        "question": "What is the maximum height the shuttlecock can be hit during play?",
+        "choices": ["1 meter", "1.5 meters", "2 meters", "2.5 meters"],
+        "answer": "1.5 meters"
     }
 ]
 
 choice_variables = []  # Define choice_variables outside of the loop
 
+
 def navigate_to_recommendation():
     print("Navigating to recommendation page...")
     root.destroy()
-    subprocess.run(["python", "recommendation.py",current_user])
+    subprocess.run(["python", "recommendation.py", current_user])
+
 
 def navigate_to_test():
     print("Navigating to test page...")
-    subprocess.run(["python", "quiz.py",current_user])
+    subprocess.run(["python", "quiz.py", current_user])
+
 
 def navigate_to_explore():
     print("Navigating to explore page...")
-    subprocess.run(["python", "explore.py",current_user])
+    subprocess.run(["python", "explore.py", current_user])
+
 
 def check_answer():
     user_answers = [variable.get() for variable in choice_variables]
     correct_answers = [question["answer"] for question in quiz_questions]
     score = sum(user_answer == correct_answer for user_answer, correct_answer in zip(user_answers, correct_answers))
-    messagebox.showinfo("Quiz Finished", f"Congratulations! You have completed the quiz. You scored {score} out of 5 questions correctly.")
+    messagebox.showinfo("Quiz Finished",
+                        f"Congratulations! You have completed the quiz. You scored {score} out of {len(quiz_questions)} questions correctly.")
     for variable in choice_variables:
         variable.set("")  # Reset the radio button selections
     root.destroy()
-    subprocess.run(["python", "recommendation.py",current_user])    
+    subprocess.run(["python", "recommendation.py", current_user])
+
 
 root = tk.Tk()
 root.title("Sports Quiz for Badminton")
@@ -289,9 +322,9 @@ style.configure("Inverted.TLabel", background=style.colors.dark, foreground=styl
 # Set the geometry of the root window to fill the screen
 root.geometry("%dx%d" % (width, height))
 
-style.configure("Sidebar.TButton", font=("Arial", 15), width=15)
+style.configure("Sidebar.TButton", font=("Helvetica", 16), width=15)
 
-sidebar_frame = ttk.Frame(root,padding=20,style="Inverted.TLabel", borderwidth=12, )
+sidebar_frame = ttk.Frame(root, padding=20, style="Inverted.TLabel", borderwidth=12, )
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
@@ -299,38 +332,45 @@ sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
 sidebar_label.pack(pady=10)
 button_width = 20
 
-sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton",command=navigate_to_recommendation)
+sidebar_button1 = ttk.Button(sidebar_frame, text="Recommendation", style="Sidebar.TButton",
+                              command=navigate_to_recommendation)
 sidebar_button1.pack(pady=5)
 
-sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton",command=navigate_to_test)
+sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton", command=navigate_to_test)
 sidebar_button2.pack(pady=5)
 
-sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton",command=navigate_to_explore)
+sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton", command=navigate_to_explore)
 sidebar_button3.pack(pady=5)
+
+
+# Scrolled Frame
+scrolled_frame = ScrolledFrame(root)
+scrolled_frame.pack(expand=True, fill='both', padx=20, pady=20)
+
 # Quiz label
-quiz_label = tk.Label(root, text="Badminton Quiz", font=("Helvetica", 16, "bold"))
-quiz_label.place(relx=0.5, y=10, anchor="n")
+quiz_label = tk.Label(scrolled_frame, text="Badminton Quiz", font=("Helvetica", 22, "bold"))
+quiz_label.pack(pady=10)
 
 # Display all questions and options
-y_offset = 50
-y_increment = 100  # Increase this value to increase spacing between questions
+y_offset = 0
+y_increment = 10  # Increase this value to increase spacing between questions
 for question_data in quiz_questions:
-    question_label = tk.Label(root, text=question_data["question"])
-    question_label.place(relx=0.5, y=y_offset, anchor="n")
+    question_label = tk.Label(scrolled_frame, text=question_data["question"], font=("Helvetica", 14))
+    question_label.pack(anchor='w', padx=20, pady=20)
 
-    choice_frame = ttk.Frame(root)
-    choice_frame.place(relx=0.5, y=y_offset + 20, anchor="n")
+    choice_frame = ttk.Frame(scrolled_frame)
+    choice_frame.pack(anchor='w', padx=40 , pady=10)
 
     for choice in question_data["choices"]:
         choice_var = tk.StringVar(value="")
         choice_variables.append(choice_var)
         choice_button = ttk.Radiobutton(choice_frame, text=choice, variable=choice_var, value=choice)
-        choice_button.pack(side="left", padx=5)
+        choice_button.pack(side="left", padx=10)
 
     y_offset += y_increment
 
 # Submit button
-submit_button = ttk.Button(root, text="Submit", command=check_answer)
-submit_button.place(relx=0.5, y=y_offset + 20, anchor="n")
+submit_button = ttk.Button(scrolled_frame, text="Submit", command=check_answer)
+submit_button.pack()
 
 root.mainloop()
