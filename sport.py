@@ -11,6 +11,7 @@ import sys
 import subprocess
 import pyttsx3  # Import the pyttsx3 library
 import threading
+from ttkbootstrap.scrolled import ScrolledFrame
 
 # engine = pyttsx3.init()
 
@@ -112,17 +113,15 @@ for i, sport in enumerate(sports):
     frame_1 = ttk.Frame(notebook)
     notebook.add(frame_1, text=f'Introduction')
 
-    # add sport name label
-    sport_name_label = ttk.Label(frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Arial', 20), padding=5,wraplength=590)
-    sport_name_label.pack(pady=20)
-    
-     # Speak the introduction
-    # window.after(1000, lambda: start_speech(sport[1]))
+    scrolled_frame_1 = ScrolledFrame(frame_1)
+    scrolled_frame_1.pack(expand=True, fill='both')
 
-    # add sport information label
-    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5, wraplength=790)
-    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5,wraplength=900)
-    sport_info_label.pack()
+    # Add widgets to the scrolled frame
+    sport_name_label = ttk.Label(scrolled_frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Times New Roman', 24, 'bold'), padding=5, wraplength=590)
+    sport_name_label.pack(pady=20, in_=scrolled_frame_1)
+
+    sport_info_label = ttk.Label(scrolled_frame_1, text=f'{sport[1]}', font=('Helvetica', 16), padding=5, wraplength=900)
+    sport_info_label.pack(in_=scrolled_frame_1)
     
     frame_2 = ttk.Frame(notebook)
     notebook.add(frame_2, text=f'Rules')
@@ -140,12 +139,19 @@ for i, sport in enumerate(sports):
     shot = ImageTk.PhotoImage(image)
 
 
+    scrolled_frame_2 = ScrolledFrame(frame_2)
+    scrolled_frame_2.pack(expand=True, fill='both')
+
+
+
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590)
-    sport_name_label = ttk.Label(frame_2, text='Rules', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    # add sport name label
+    # add sport information label
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=590)
+    sport_name_label = ttk.Label(scrolled_frame_2, text='Objective And Equipments', style='primary.TLabel',  font=('Times New Roman', 20, 'bold'), padding=30, wraplength=500)
     sport_name_label.pack()
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=900, image=shot, compound='right')
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=900, image=equipments, compound='right')
     sport_info_label.pack()
 
     frame_3 = ttk.Frame(notebook)

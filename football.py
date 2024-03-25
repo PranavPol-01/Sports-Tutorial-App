@@ -1,5 +1,6 @@
 import sqlite3
 import tkinter as tk
+import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap import Style
@@ -11,14 +12,22 @@ import sys
 import subprocess
 import pyttsx3  # Import the pyttsx3 library
 import threading
+from ttkbootstrap.scrolled import ScrolledFrame
 
 # engine = pyttsx3.init()
 
 # create a styled tk window
 style = Style('lumen')
+# root = tk.Tk()
 window = style.master
+# window = ScrolledFrame(root)
 window.title("Sports")
-window.geometry("1000x700")
+window.geometry('925x500+300+200')
+# width = root.winfo_screenwidth()
+# height = root.winfo_screenheight()
+
+# # Set the geometry of the root root to fill the screen
+# root.geometry("%dx%d" % (width, height))
 
 # def start_speech(text):
 #     engine.say(text)
@@ -113,16 +122,15 @@ for i, sport in enumerate(sports):
     notebook.add(frame_1, text=f'Introduction')
 
     # add sport name label
-    sport_name_label = ttk.Label(frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Arial', 20), padding=5,wraplength=590)
-    sport_name_label.pack(pady=20)
-    
-     # Speak the introduction
-    # window.after(1000, lambda: start_speech(sport[1]))
+    scrolled_frame_1 = ScrolledFrame(frame_1)
+    scrolled_frame_1.pack(expand=True, fill='both')
 
-    # add sport information label
-    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5, wraplength=790)
-    sport_info_label = ttk.Label(frame_1, text=f'{sport[1]}', font=('Arial', 14), padding=5,wraplength=900)
-    sport_info_label.pack()
+    # Add widgets to the scrolled frame
+    sport_name_label = ttk.Label(scrolled_frame_1, text=f'{sport[0]}', style='primary.TLabel', font=('Times New Roman', 24, 'bold'), padding=5, wraplength=590)
+    sport_name_label.pack(pady=20, in_=scrolled_frame_1)
+
+    sport_info_label = ttk.Label(scrolled_frame_1, text=f'{sport[1]}', font=('Helvetica', 16), padding=5, wraplength=900)
+    sport_info_label.pack(in_=scrolled_frame_1)
     
     frame_2 = ttk.Frame(notebook)
     notebook.add(frame_2, text=f'Objective And Equipments')
@@ -139,25 +147,36 @@ for i, sport in enumerate(sports):
     # Convert the PIL Image to a tk.PhotoImage
     equipments = ImageTk.PhotoImage(image)
 
+    scrolled_frame_2 = ScrolledFrame(frame_2)
+    scrolled_frame_2.pack(expand=True, fill='both')
+
+
 
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=590)
-    sport_name_label = ttk.Label(frame_2, text='Objective And Equipments', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    # add sport name label
+    # add sport information label
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=590)
+    sport_name_label = ttk.Label(scrolled_frame_2, text='Objective And Equipments', style='primary.TLabel',  font=('Times New Roman', 20, 'bold'), padding=30, wraplength=500)
     sport_name_label.pack()
-    sport_info_label = ttk.Label(frame_2, text=f'{sport[2]}',font=('Arial', 14), padding=5,wraplength=900, image=equipments, compound='right')
+    sport_info_label = ttk.Label(scrolled_frame_2, text=f'{sport[2]}', font=('Helvetica', 16), padding=5, wraplength=900, image=equipments, compound='right')
     sport_info_label.pack()
+
+
 
     frame_3 = ttk.Frame(notebook)
     notebook.add(frame_3, text=f'Rules')
 
-    sport_name_label = ttk.Label(frame_3, text='Rules', style='primary.TLabel', font=('Arial', 20), padding=30,wraplength=500)
+    scrolled_frame_3 = ScrolledFrame(frame_3)
+    scrolled_frame_3.pack(expand=True, fill='both')
+
+    sport_name_label = ttk.Label(scrolled_frame_3, text='Rules', style='primary.TLabel', font=('Times New Roman', 24,'bold'), padding=30,wraplength=500)
     sport_name_label.pack()
 
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=790)
-    sport_info_label = ttk.Label(frame_3, text=f'{sport[3]}',font=('Arial', 14), padding=5,wraplength=900)
+    sport_info_label = ttk.Label(scrolled_frame_3, text=f'{sport[3]}',font=('Helvetica', 16), padding=5,wraplength=790)
+    sport_info_label = ttk.Label(scrolled_frame_3, text=f'{sport[3]}',font=('Helvetica', 16), padding=5,wraplength=900)
     sport_info_label.pack()
 
     frame_6 = ttk.Frame(notebook)
@@ -294,7 +313,7 @@ for i, sport in enumerate(sports):
     play_video()
 
     # add sport information label
-    sport_info_label = ttk.Label(frame_4, text=f'{sport[4]}',font=('Arial', 14), padding=5,wraplength=590, compound='right')
+    sport_info_label = ttk.Label(frame_4, text=f'{sport[4]}',font=('Helvetica', 16), padding=5,wraplength=590, compound='right')
     sport_info_label.grid(row=0, column=0, sticky='nsew')
     #sport_info_label.pack()
     frame_4.grid_columnconfigure(0, weight=1)
@@ -324,6 +343,8 @@ for i, sport in enumerate(sports):
 
     # Load the image with PIL
     image = Image.open(".\\assets\\fbmrdia5.png")
+    scrolled_frame_5 = ScrolledFrame(frame_5)
+    scrolled_frame_5.pack(expand=True, fill='both')
 
     # Calculate the aspect ratio
     aspect_ratio = image.width / image.height
@@ -338,7 +359,7 @@ for i, sport in enumerate(sports):
     dimensions = ImageTk.PhotoImage(image)
     # window.after(1000, lambda: start_speech(sport[5]))
 
-    sport_info_label = ttk.Label(frame_5, text=f'{sport[5]}',font=('Arial', 14), padding=5,wraplength=590, image=dimensions, compound='right')
+    sport_info_label = ttk.Label(scrolled_frame_5, text=f'{sport[5]}',font=('Helvetica', 16), padding=5,wraplength=590, image=dimensions, compound='right')
     sport_info_label.pack()  
 
 def update_progress(event):

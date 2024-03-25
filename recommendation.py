@@ -352,7 +352,7 @@ from openpyxl.workbook import Workbook
 from PIL import Image, ImageDraw
 from tkinter.scrolledtext import ScrolledText
 import sys
-
+from PIL import ImageTk, Image
 # Get the current user from command-line arguments
 current_user = sys.argv[1]
 
@@ -370,6 +370,22 @@ def create_rounded_rectangle(width, height, radius, color):
     return image
 
 
+def set_bg_image():
+    global photo  # Declare photo as a global variable
+    desktop_width = root.winfo_screenwidth()
+    desktop_height = root.winfo_screenheight()
+
+    # Load the image and resize it to the desktop size
+    image = Image.open(r".\assets\sport_tut.jpg")  # Use raw string and backslashes
+    image = image.resize((desktop_width, desktop_height))
+
+    # Create an image with an alpha channel for opacity
+    alpha = Image.new('L', image.size, 99)  # 99 is the alpha value (30% opacity)
+    image.putalpha(alpha)
+
+    photo = ImageTk.PhotoImage(image)
+    main_frame.config(image=photo)
+    main_frame.image = photo
 root = tk.Tk()
 root.title("Sports Recommendation System")
 
@@ -394,6 +410,25 @@ conn1.close()
 print(sports)
 # Global variable to store the username
 # current_user = None
+
+def load_background_image(frame):
+    # Load the background image
+    background_image = Image.open("./assets/sport_tut.jpg")
+    # Resize the image to fit the frame
+    background_image = background_image.resize((frame.winfo_width(), frame.winfo_height()))
+    # Convert the image to Tkinter-compatible format
+    background_photo = ImageTk.PhotoImage(background_image)
+
+    # Create a label to hold the background image
+    background_label = ttk.Label(frame, image=background_photo)
+    background_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    # Make sure other widgets are stacked above the background label
+    background_label.lower()
+
+# Call the load_background_image function with the background frame as parameter
+# load_background_image(background_frame)
+
 
 
 def get_recommendations(preferences):
@@ -433,10 +468,13 @@ def show_recommendation_cards(recommendations):
     num_cols = 3
 
     # Define padding and spacing for the grid
-    padx = 10
-    pady = 10
+    padx = 20  # Padding for width
+    pady = 40  # Padding for height
     row_weight = 1  # Weight for row resizing
     col_weight = 1  # Weight for column resizing
+
+    # Define fixed width for recommendation cards
+    card_width = 250  # Adjust as needed
 
     # Configure row and column weights for resizing
     for i in range(num_rows):
@@ -449,21 +487,26 @@ def show_recommendation_cards(recommendations):
         row = i // num_cols
         col = i % num_cols
 
-        # Create a frame for the recommendation card
-        card_frame = ttk.Frame(cards_frame, padding=(padx, pady), style="Inverted.TLabel", borderwidth=2, relief="solid")
+        # Create a frame for the recommendation card with fixed width
+        card_frame = ttk.Frame(cards_frame, width=card_width, padding=(padx, pady), style="Inverted.TLabel", borderwidth=2, relief="solid")
         card_frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
 
         # Add a colored label behind the frame
         background_label = ttk.Label(card_frame, background=bg_color)
         background_label.place(relwidth=1, relheight=1)
 
-        # Add a label to display the recommendation
-        recommendation_label = ttk.Label(card_frame, text=recommendation[0], font=("helvetica", 14))
+        # Modify recommendation text to wrap if length exceeds 15 characters
+        recommendation_text = recommendation[0]
+        if len(recommendation_text) > 15:
+            recommendation_text = "\n".join([recommendation_text[i:i+15] for i in range(0, len(recommendation_text), 15)])
+
+        # Add a label to display the wrapped recommendation text
+        recommendation_label = ttk.Label(card_frame, text=recommendation_text, font=("helvetica", 16), anchor="center", wraplength=200)  # Center text and wrap
         recommendation_label.pack(fill="both", expand=True)
 
         # Add a button to navigate to the next page
         navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
-        navigate_button.pack(side="bottom", pady=5, padx=10)
+        navigate_button.pack(side="bottom", pady=10, padx=20)  # Increase padding for button
 
     # Add empty frames to fill in the empty grid spaces, ensuring proper alignment
     for i in range(num_rows * num_cols - len(recommendations)):
@@ -471,8 +514,9 @@ def show_recommendation_cards(recommendations):
         col = (len(recommendations) + i) % num_cols
 
         # Create an empty frame
-        empty_frame = ttk.Frame(cards_frame, padding=(padx, pady))
+        empty_frame = ttk.Frame(cards_frame, width=card_width, padding=(padx, pady))
         empty_frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
+
 
 
 def navigate_to_next_page(sport):
@@ -526,7 +570,7 @@ def navigate_to_explore():
 
 
 # Create a ttkbootstrap style
-style = Style(theme="superhero")
+style = Style(theme="lumen")
 
 # Create a frame to contain all widgets
 main_frame = ScrolledFrame(root)
@@ -566,8 +610,27 @@ sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButt
 sidebar_button3.pack(pady=5)
 
 # Create a frame for the content
-content_frame = ttk.Frame(main_frame)
+content_frame = ttk.Frame(main_frame, height=height, width=width)
 content_frame.pack(fill=tk.BOTH, expand=tk.YES)
+# Function to load the background image
+def load_background_image(event=None):
+    # Load the background image
+    background_image = Image.open("./assets/sport_tut.jpg")
+    # Resize the image to fit the content frame
+    background_image = background_image.resize((content_frame.winfo_width(), content_frame.winfo_height()))
+    # Convert the image to Tkinter-compatible format
+    background_photo = ImageTk.PhotoImage(background_image)
+
+    # Create a label to hold the background image
+    background_label = ttk.Label(content_frame, image=background_photo)
+    background_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    # Make sure other widgets are stacked above the background label
+    background_label.lower()
+
+# Bind the function to the <Configure> event of the content_frame
+content_frame.bind("<Configure>", load_background_image)
+
 
 # Create a frame for the header with a specified height and inverted colors
 header_frame = ttk.Frame(content_frame, height=100)
@@ -628,14 +691,14 @@ title_label.pack(pady=20)
 instruction_label = ttk.Label(recommendation_frame, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16))
 instruction_label.pack(pady=10)
 
-age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 0-12)", "Teenagers (Ages 13-19)", "Young Adults (Ages 20-39)", "Middle-Aged Adults (Ages 40-59)", "Older Adults (Ages 60+)"], font=("Arial", 14), state="readonly")
+age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 8-12)", "Teenagers (Ages 13-19)", "Young Adults (Ages 20-39)", "Middle-Aged Adults (Ages 40-59)", "Older Adults (Ages 60+)"], font=("Arial", 14), state="readonly")
 age_group_combobox.pack(pady=10)
 
 cards_frame = ttk.Frame(content_frame)
 cards_frame.pack(padx=10, pady=10)
 
-recommendation_label = ttk.Label(recommendation_frame, text="", font=("Arial", 14))
-recommendation_label.pack(pady=10)
+recommendation_label = ttk.Label(recommendation_frame,wraplength=300, text="", font=("Arial", 14))
+recommendation_label.pack(pady=30)
 
 def show_recommendations():
     selected_age_group = age_group_combobox.get()
@@ -652,6 +715,23 @@ def show_recommendations():
 
 recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="Sidebar.TButton", command=show_recommendations)
 recommend_button.pack(pady=10)
+
+
+
+# Create a frame to act as the background image frame
+background_frame = ttk.Frame(content_frame)
+background_frame.pack(fill='both', expand=True)
+
+# Load the background image onto the background frame
+load_background_image(background_frame)
+
+# Create other frames and widgets as needed (including the sidebar, header, course details, recommendations, etc.)
+
+# Now, let's make sure other frames stack above the background frame
+sidebar_frame.lift()  # Lift the sidebar frame above the background frame
+header_frame.lift()   # Lift the header frame above the background frame
+course_d_frame.lift() # Lift the course details frame above the background frame
+recommendation_frame.lift() # Lift the recommendation frame above the background frame
 
 root.mainloop()
 
