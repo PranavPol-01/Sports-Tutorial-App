@@ -70,8 +70,7 @@
 # //////////////////////////////////// NEWLY CODE //////////////////////////////
 import tkinter as tk
 import sqlite3
-import tkinter as tk
-import sqlite3
+from PIL import Image, ImageTk
 
 # Create a SQLite database (or connect to an existing one)
 conn = sqlite3.connect("calorie_tracker.db")
@@ -222,19 +221,64 @@ def calorie_counter1():
 
 
 
-    result_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
-def calorie_counter():
-    weight = float(weight_entry.get())
-    height = float(height_entry.get())
-    age = int(age_entry.get())
-    gender = gender_var.get()
+    calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
+# def calorie_counter():
+#     weight = float(weight_entry.get())
+#     height = float(height_entry.get())
+#     age = int(age_entry.get())
+#     gender = gender_var.get()
 
-    if gender == "Male":
-        bmr = 10 * weight + 6.25 * height - 5 * age + 5
-    else:
-        bmr = 10 * weight + 6.25 * height - 5 * age - 161
+#     if gender == "Male":
+#         bmr = 10 * weight + 6.25 * height - 5 * age + 5
+#     else:
+#         bmr = 10 * weight + 6.25 * height - 5 * age - 161
 
-    result_label.config(text=f"Your BMR: {bmr} kcal/day")
+#     result_label.config(text=f"Your BMR: {bmr} kcal/day")
+# Create the main application window
+    
+
+def show_calorie_table_info():
+    # Display the table with appropriate images
+    con=sqlite3.connect('calorie_counter.db')
+    c = con.cursor()    
+    
+    # Create labels for table headers
+    header_labels = ["Name", "Calories", "Image"]
+    for i, header in enumerate(header_labels):
+        label = tk.Label(frame2, text=header, font=("Arial", 12, "bold"))
+        label.grid(row=0, column=i, padx=10, pady=20)
+
+    # Retrieve all entries from the database
+    c.execute("SELECT * FROM calorie_counter")
+    entries = c.fetchall()
+
+    # Display the entries in the table
+    for i, entry in enumerate(entries):
+        name = entry[1]
+        calories = entry[2]
+
+        # Create labels for name and calories
+        name_label = tk.Label(frame2, text=name)
+        name_label.grid(row=i+1, column=0, padx=10, pady=5)
+
+        calories_label = tk.Label(frame2, text=calories)
+        calories_label.grid(row=i+1, column=1, padx=10, pady=5)
+
+        # Create an image label
+        image_path = f"assets/shots.png"  # Assuming the images are stored in a folder named "images"
+        try:
+            image_pil = Image.open(image_path)
+            image_pil = image_pil.resize((50, 50))  # Resize the image as needed
+            image_tk = ImageTk.PhotoImage(image_pil)
+            image_label = tk.Label(frame2, image=image_tk)
+            image_label.image = image_tk  # Keep a reference to the image to prevent it from being garbage collected
+            image_label.grid(row=i + 1, column=2, padx=10, pady=5)
+        except FileNotFoundError:
+            print(f"Image not found for {name}: {image_path}")
+    con.close()
+   
+
+
 # Create the main application window
 window = tk.Tk()
 window.title("Calorie Tracker")
@@ -242,6 +286,8 @@ window.title("Calorie Tracker")
 # Create a frame
 frame = tk.Frame(window)
 frame1 = tk.Frame(window)
+frame2 = tk.Frame(window)
+
 # Entry fields
 name_label = tk.Label(frame, text="Name:")
 name_entry = tk.Entry(frame)
@@ -263,8 +309,10 @@ add_button = tk.Button(frame, text="Add Entry", command=add_entry)
 show_button = tk.Button(frame, text="Show Result", command=show_result)
 calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1)
 raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
+# show_calorie_chart=tk.Button(frame2,text='Show Calorie Chart',command=show_calorie_table_info)
 # Result display
 result_label = tk.Label(frame, text="")
+calorie_label = tk.Label(frame1, text="")
 
 # Layout
 # frame layout
@@ -289,10 +337,16 @@ item4.grid(row=4, column=0)
 item4_entry.grid(row=4, column=1)
 calorie_counter_button.grid(row=5, column=0, columnspan=2)
 raw_data.grid(row=6,column=0, columnspan=2)
+calorie_label.grid(row=7, column=0, columnspan=2)
+
+# Frame2 layout
+# show_calorie_chart.grid(row=0,column=0)
+show_calorie_table_info()
 
 # Pack the frame
-frame.pack()
-frame1.pack()
+frame.grid(row=0, column=0)
+frame1.grid(row=1, column=0)
+frame2.grid(row=0, column=1)
 
 # Start the GUI event loop
 window.mainloop()
@@ -300,9 +354,5 @@ window.mainloop()
 # Close the database connection when the application exits
 conn.close()
 
-# Start the GUI event loop
-window.mainloop()
 
-# Close the database connection when the application exits
-conn.close()
 
