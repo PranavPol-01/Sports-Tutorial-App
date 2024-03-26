@@ -104,66 +104,79 @@ def show_result():
     print(total_calories)
     result_label.config(text=f"Total calories for {name}: {total_calories} kcal")
 
-def calorie_counter1():
+def enter_raw_data():
     conn = sqlite3.connect("calorie_counter.db")
     cursor = conn.cursor()
+    cursor.execute("""
+    INSERT INTO calorie_counter (meal, calories) 
+    VALUES 
+    ('chapati', 104),
+    ('bread', 82),
+    ('lady finger', 35),
+    ('cheese', 350),
+    ('rice', 242),
+    ('idly', 58)
+    """)
+
+    conn.commit()
+    print("Added entry to database")
+
+def calorie_counter1():
+    conn=sqlite3.connect('calorie_counter.db')
+    c1 = conn.cursor()
 
     # Create a table to store user entries
-    cursor.execute("""
+    c1.execute("""
         CREATE TABLE IF NOT EXISTS calorie_counter (
         id INTEGER PRIMARY KEY,
         meal TEXT,
         calories INT
         )
     """)
-    conn.commit()
-    meal_calories = 0
-    meal1 = item1_entry.get()
-    meal2 = item2_entry.get()
-    meal3 = item3_entry.get()
-    meal4 = item4_entry.get()
+    
+    # meal_calories = 0
+    # meal1 = item1_entry.get()
+    # meal2 = item2_entry.get()
+    # meal3 = item3_entry.get()
+    # meal4 = item4_entry.get()
 
-    # Retrieve calories for meal1
-    cursor.execute("SELECT SUM(calories) FROM calorie_counter WHERE meal=?", (meal1,))
-    calorie_entry1 = cursor.fetchone()[0]
-    # if calorie_entry1:
-    #     calorie_entries1 = calorie_entry1[0]
-    #     meal_calories += calorie_entries1
+    # # # Retrieve calories for meal1
+    # print(meal1,meal2,meal3,meal4)
+    # c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal1,))
+    # calorie_entry1 = int(c1.fetchone())
+    # print(calorie_entry1)
+    
 
-    # Retrieve calories for meal2
-    cursor.execute("SELECT SUM(calories) FROM calorie_counter WHERE meal=?", (meal2,))
-    calorie_entry2 = cursor.fetchone()[0]
-    # if calorie_entry2:
-    #     calorie_entries2 = calorie_entry2[0]
-    #     meal_calories += calorie_entries2
+    # # # Retrieve calories for meal2
+    # c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal2,))
+    # calorie_entry2 = int(c1.fetchone())
+    
 
-    # Retrieve calories for meal3
-    cursor.execute("SELECT SUM(calories) FROM calorie_counter WHERE meal=?", (meal3,))
-    calorie_entry3 = cursor.fetchone()[0]
-    # if calorie_entry3:
-    #     calorie_entries3 = calorie_entry3[0]
-    #     meal_calories += calorie_entries3
+    # # # Retrieve calories for meal3
+    # c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal3,))
+    # calorie_entry3 = int(c1.fetchone())
+   
 
-    # Retrieve calories for meal4
-    cursor.execute("SELECT SUM(calories) FROM calorie_counter WHERE meal=?", (meal4,))
-    calorie_entry4 = cursor.fetchone()[0]
-    # if calorie_entry4:
-    #     calorie_entries4 = calorie_entry4[0]
-    #     meal_calories += calorie_entries4
+    # # # Retrieve calories for meal4
+    # c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal4,))
+    # calorie_entry4 = int(c1.fetchone())
+    
 
-    print(calorie_entry1, calorie_entry2, calorie_entry3, calorie_entry4)
+    # print(calorie_entry1, calorie_entry2, calorie_entry3, calorie_entry4)
+    # meal_calories = calorie_entry1+calorie_entry2+calorie_entry3+calorie_entry4
 
     
 
     # meal_list = [item1_entry.get(), item2_entry.get(), item3_entry.get(), item4_entry.get()]
     # for meal in meal_list:
     #     if meal:  # Check if meal entry is not empty
-    #         cursor.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal,))
+    #         c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal,))
     #         calorie_entries = cursor.fetchall()
     #         print(calorie_entries)
     #         if calorie_entries:  # Check if any entries were found for the meal
     #             for entry in calorie_entries:
     #                 meal_calories += entry[0]
+    #             # result_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
     #         else:
     #             print(f"No entries found for meal: {meal}")  # Debugging
 
@@ -190,6 +203,22 @@ def calorie_counter1():
     # if calorie_entries:  # Check if any entries were found for the meal
     #     for entry in calorie_entries:
     #         meal_calories += entry[0]
+    meal_calories = 0
+    meal_entries = [item1_entry.get(), item2_entry.get(), item3_entry.get(), item4_entry.get()]
+
+    for meal in meal_entries:
+        if meal:  # Check if the meal entry is not empty
+            c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal,))
+            result = c1.fetchone()
+            if result:  # Check if the query result is not None
+                calorie_entry = int(result[0])
+                meal_calories += calorie_entry
+            else:
+                print(f"No calorie information found for {meal}")
+        else:
+            print("Empty meal entry")
+
+    print("Total meal calories:", meal_calories)
 
 
 
@@ -233,7 +262,7 @@ item4_entry = tk.Entry(frame1)
 add_button = tk.Button(frame, text="Add Entry", command=add_entry)
 show_button = tk.Button(frame, text="Show Result", command=show_result)
 calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1)
-
+raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
 # Result display
 result_label = tk.Label(frame, text="")
 
@@ -247,6 +276,7 @@ add_button.grid(row=2, column=0, columnspan=2)
 show_button.grid(row=3, column=0, columnspan=2)
 result_label.grid(row=4, column=0, columnspan=2)
 
+
 # frame1 layout
 title.grid(row=0, column=0)
 item1.grid(row=1, column=0)
@@ -258,6 +288,7 @@ item3_entry.grid(row=3, column=1)
 item4.grid(row=4, column=0)
 item4_entry.grid(row=4, column=1)
 calorie_counter_button.grid(row=5, column=0, columnspan=2)
+raw_data.grid(row=6,column=0, columnspan=2)
 
 # Pack the frame
 frame.pack()
