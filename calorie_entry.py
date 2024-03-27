@@ -86,13 +86,13 @@ cursor.execute("""
 """)
 conn.commit()
 
-def add_entry():
-    name = name_entry.get()
-    calories = int(calories_entry.get())
+# def add_entry():
+#     name = name_entry.get()
+#     calories = int(calories_entry.get())
 
-    # Insert the entry into the database
-    cursor.execute("INSERT INTO calorie_entries (name, calories) VALUES (?, ?)", (name, calories))
-    conn.commit()
+#     # Insert the entry into the database
+#     cursor.execute("INSERT INTO calorie_entries (name, calories) VALUES (?, ?)", (name, calories))
+#     conn.commit()
 
 def show_result():
     name = name_entry.get()
@@ -101,37 +101,37 @@ def show_result():
     cursor.execute("SELECT SUM(calories) FROM calorie_entries WHERE name=?", (name,))
     total_calories = cursor.fetchone()[0]
     print(total_calories)
-    result_label.config(text=f"Total calories for {name}: {total_calories} kcal")
+    result_label.config(text=f"Total calories of a day for {name}: {total_calories} kcal")
 
 def enter_raw_data():
     conn = sqlite3.connect("calorie_counter.db")
     cursor = conn.cursor()
     cursor.execute("""
-    INSERT INTO calorie_counter (meal, calories) 
-    VALUES 
-    ('chapati', 104),
-    ('bread', 82),
-    ('lady finger', 35),
-    ('cheese', 350),
-    ('rice', 242),
-    ('idly', 58)
+        CREATE TABLE IF NOT EXISTS calorie_counter (
+        id INTEGER PRIMARY KEY,
+        meal TEXT,
+        calories INT,
+        image BLOB
+        )
+    """)
+    cursor.execute("""
+        INSERT INTO calorie_counter (meal, calories, image) 
+        VALUES 
+        ('chapati', 104, 'assets/chapati.png'),
+        ('bread', 82, 'assets/bread.png'),
+        ('lady finger', 35, 'assets/lady finger.png'),
+        ('cheese', 350, 'assets/cheese.png'),
+        ('rice', 242, 'assets/rice.png'),
+        ('idli', 58, 'assets/idli.png')
     """)
 
     conn.commit()
     print("Added entry to database")
 
-def calorie_counter1():
-    conn=sqlite3.connect('calorie_counter.db')
-    c1 = conn.cursor()
 
-    # Create a table to store user entries
-    c1.execute("""
-        CREATE TABLE IF NOT EXISTS calorie_counter (
-        id INTEGER PRIMARY KEY,
-        meal TEXT,
-        calories INT
-        )
-    """)
+def calorie_counter1():
+    con = sqlite3.connect("calorie_counter.db")
+    c1 = con.cursor()
     
     # meal_calories = 0
     # meal1 = item1_entry.get()
@@ -218,10 +218,15 @@ def calorie_counter1():
             print("Empty meal entry")
 
     print("Total meal calories:", meal_calories)
-
-
-
     calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
+    con.close()
+    # Starting the new cursor to point to the calorie_tracker.db
+    conn = sqlite3.connect("calorie_tracker.db")
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO calorie_entries (name, calories) VALUES (?, ?)", (user_name_entry.get(), meal_calories))
+    conn.commit()
+    conn.close()
+
 # def calorie_counter():
 #     weight = float(weight_entry.get())
 #     height = float(height_entry.get())
@@ -256,6 +261,7 @@ def show_calorie_table_info():
     for i, entry in enumerate(entries):
         name = entry[1]
         calories = entry[2]
+        image = entry[3]
 
         # Create labels for name and calories
         name_label = tk.Label(frame2, text=name)
@@ -265,7 +271,7 @@ def show_calorie_table_info():
         calories_label.grid(row=i+1, column=1, padx=10, pady=5)
 
         # Create an image label
-        image_path = f"assets/shots.png"  # Assuming the images are stored in a folder named "images"
+        image_path = image  # Assuming the images are stored in a folder named "images"
         try:
             image_pil = Image.open(image_path)
             image_pil = image_pil.resize((50, 50))  # Resize the image as needed
@@ -291,10 +297,12 @@ frame2 = tk.Frame(window)
 # Entry fields
 name_label = tk.Label(frame, text="Name:")
 name_entry = tk.Entry(frame)
-calories_label = tk.Label(frame, text="Calories:")
-calories_entry = tk.Entry(frame)
+# calories_label = tk.Label(frame, text="Calories:")
+# calories_entry = tk.Entry(frame)
 
 title = tk.Label(frame1, text="Calorie Counter")
+user_name = tk.Label(frame1, text="Your Name:")
+user_name_entry = tk.Entry(frame1)
 item1 = tk.Label(frame1, text="Food item 1:")
 item1_entry = tk.Entry(frame1)
 item2 = tk.Label(frame1, text="Food item 2:")
@@ -305,10 +313,10 @@ item4 = tk.Label(frame1, text ="Food item 4:")
 item4_entry = tk.Entry(frame1)
 
 # Buttons
-add_button = tk.Button(frame, text="Add Entry", command=add_entry)
+# add_button = tk.Button(frame, text="Add Entry", command=add_entry)
 show_button = tk.Button(frame, text="Show Result", command=show_result)
 calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1)
-raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
+# raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
 # show_calorie_chart=tk.Button(frame2,text='Show Calorie Chart',command=show_calorie_table_info)
 # Result display
 result_label = tk.Label(frame, text="")
@@ -318,29 +326,33 @@ calorie_label = tk.Label(frame1, text="")
 # frame layout
 name_label.grid(row=0, column=0)
 name_entry.grid(row=0, column=1)
-calories_label.grid(row=1, column=0)
-calories_entry.grid(row=1, column=1)
-add_button.grid(row=2, column=0, columnspan=2)
+# calories_label.grid(row=1, column=0)
+# calories_entry.grid(row=1, column=1)
+# add_button.grid(row=2, column=0, columnspan=2)
 show_button.grid(row=3, column=0, columnspan=2)
 result_label.grid(row=4, column=0, columnspan=2)
 
 
 # frame1 layout
 title.grid(row=0, column=0)
-item1.grid(row=1, column=0)
-item1_entry.grid(row=1, column=1)
-item2.grid(row=2, column=0)
-item2_entry.grid(row=2, column=1)
-item3.grid(row=3, column=0)
-item3_entry.grid(row=3, column=1)
-item4.grid(row=4, column=0)
-item4_entry.grid(row=4, column=1)
-calorie_counter_button.grid(row=5, column=0, columnspan=2)
-raw_data.grid(row=6,column=0, columnspan=2)
+user_name.grid(row=1, column=0)
+user_name_entry.grid(row=1, column=1)
+item1.grid(row=2, column=0)
+item1_entry.grid(row=2, column=1)
+item2.grid(row=3, column=0)
+item2_entry.grid(row=3, column=1)
+item3.grid(row=4, column=0)
+item3_entry.grid(row=4, column=1)
+item4.grid(row=5, column=0)
+item4_entry.grid(row=5, column=1)
+calorie_counter_button.grid(row=6, column=0, columnspan=2)
+# raw_data.grid(row=6,column=0, columnspan=2)
 calorie_label.grid(row=7, column=0, columnspan=2)
 
 # Frame2 layout
 # show_calorie_chart.grid(row=0,column=0)
+
+# enter_raw_data()
 show_calorie_table_info()
 
 # Pack the frame
