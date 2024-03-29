@@ -355,6 +355,7 @@ import sys
 from PIL import ImageTk, Image
 # Get the current user from command-line arguments
 current_user = sys.argv[1]
+# sprt= sys.argv[2]
 
 
 def create_rounded_rectangle(width, height, radius, color):
@@ -524,8 +525,13 @@ def navigate_to_next_page(sport):
     if current_user is not None:
         # Run sports.py script with current user and selected sport as arguments
         #subprocess.Popen(["python", "sport.py", current_user, sport])
-        root.destroy()
-        subprocess.Popen(["python", "sport.py", current_user])
+        if sport == "badminton":
+         root.destroy()
+         subprocess.Popen(["python", "sport.py", current_user,'badminton'])
+        else:
+         root.destroy()
+         subprocess.Popen(["python", "football.py", current_user,'football'])
+
         
     else:
         print("Error: Current user is not set.")
@@ -558,13 +564,20 @@ def navigate_to_recommendation():
     root.destroy()
     subprocess.run(["python", "recommendation.py",current_user])
 
-def navigate_to_test():
-    print("Navigating to test page...")
-    subprocess.run(["python", "quiz.py"])
+def navigate_to_test(sport):
+    print("Navigating to test page...") 
+     # Placeholder for navigation logic
+    if sport =='badminton':
+        root.destroy()
+        subprocess.run(['python','quiz.py', current_user])
+    
+    else:
+        root.destroy()
+        subprocess.run(['python','footballquiz.py', current_user])
 
 def navigate_to_explore():
     print("Navigating to explore page...")
-    subprocess.run(["python", "explore.py"])
+    subprocess.run(["python", "explore.py",current_user])
 
 # Create a user interface with tkinter
 

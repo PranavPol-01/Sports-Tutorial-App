@@ -7,6 +7,7 @@ import os
 from PIL import Image
 import sys
 username = sys.argv[1]
+sprt=sys.argv[2]
 
 # # Get the directory of the current file
 # dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -18,14 +19,20 @@ username = sys.argv[1]
 # tick_image = Image.open(tick_image_path)
 
 def navigate_to_test():
-    print("Navigating to test page...")  # Placeholder for navigation logic
-    root.destroy()
-    subprocess.run(['python','quiz.py', username])
+    print("Navigating to test page...") 
+     # Placeholder for navigation logic
+    if sprt =='badminton':
+        root.destroy()
+        subprocess.run(['python','quiz.py', username,sprt])
+    
+    else:
+        root.destroy()
+        subprocess.run(['python','footballquiz.py', username,sprt])
 
 def navigate_back():
     print("Navigating back...")  # Placeholder for navigation logic
     root.destroy()
-    subprocess.run(["python", "recommendation.py", username])
+    subprocess.run(["python", "recommendation.py", username,sprt])
 
 root = Tk()
 root.title('Congratulations!')

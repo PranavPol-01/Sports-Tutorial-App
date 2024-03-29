@@ -14,6 +14,7 @@ import pyttsx3  # Import the pyttsx3 library
 import threading
 from ttkbootstrap.scrolled import ScrolledFrame
 username = sys.argv[0]
+sprt = sys.argv[1]
 
 # engine = pyttsx3.init()
 
@@ -450,7 +451,7 @@ else:
 #     app = CongratsPage.CongratulationsPage()
 
 def on_done_button_clicked():
-    subprocess.run(["python", "congrats.py"])
+    subprocess.run(["python", "congrats.py",username,sprt])
     window.destroy()
     
         

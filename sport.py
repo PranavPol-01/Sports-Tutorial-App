@@ -104,7 +104,7 @@ print("Database created")
 
 
 username = sys.argv[1]
-# sport = sys.argv[2]
+sprt = sys.argv[2]
 
 # iterate over sports data and create a page for each column in db
 
@@ -417,7 +417,7 @@ else:
 #     app = CongratsPage.CongratulationsPage()
 
 def on_done_button_clicked():
-    subprocess.run(["python", "congrats.py"])
+    subprocess.run(["python", "congrats.py",username,sprt])
     window.destroy()
     
         
