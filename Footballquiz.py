@@ -71,10 +71,11 @@ def navigate_to_recommendation():
     subprocess.run(["python", "recommendation.py", current_user])
 
 
-def navigate_to_test():
-    print("Navigating to test page...")
-    subprocess.run(["python", "quiz.py", current_user])
-
+def navigate_to_test(sport):
+    print("Navigating to test page...") 
+     # Placeholder for navigation logic
+    root.destroy()
+    subprocess.run(["python", "test.py",current_user])
 
 def navigate_to_explore():
     print("Navigating to explore page...")

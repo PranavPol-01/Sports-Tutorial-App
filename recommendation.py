@@ -377,7 +377,7 @@ def set_bg_image():
     desktop_height = root.winfo_screenheight()
 
     # Load the image and resize it to the desktop size
-    image = Image.open(r".\assets\sport_tut.jpg")  # Use raw string and backslashes
+    image = Image.open(r".\assets/greentick.png")  # Use raw string and backslashes
     image = image.resize((desktop_width, desktop_height))
 
     # Create an image with an alpha channel for opacity
@@ -567,13 +567,8 @@ def navigate_to_recommendation():
 def navigate_to_test(sport):
     print("Navigating to test page...") 
      # Placeholder for navigation logic
-    if sport =='badminton':
-        root.destroy()
-        subprocess.run(['python','quiz.py', current_user])
-    
-    else:
-        root.destroy()
-        subprocess.run(['python','footballquiz.py', current_user])
+    root.destroy()
+    subprocess.run(["python", "test.py",current_user])
 
 def navigate_to_explore():
     print("Navigating to explore page...")
@@ -626,27 +621,16 @@ sidebar_button3.pack(pady=5)
 content_frame = ttk.Frame(main_frame, height=height, width=width)
 content_frame.pack(fill=tk.BOTH, expand=tk.YES)
 # Function to load the background image
-def load_background_image(event=None):
-    # Load the background image
-    background_image = Image.open("./assets/sport_tut.jpg")
-    # Resize the image to fit the content frame
-    background_image = background_image.resize((content_frame.winfo_width(), content_frame.winfo_height()))
-    # Convert the image to Tkinter-compatible format
-    background_photo = ImageTk.PhotoImage(background_image)
+canvas = tk.Canvas(content_frame, width=400, height=300)
+canvas.pack(fill="both", expand=True)
 
-    # Create a label to hold the background image
-    background_label = ttk.Label(content_frame, image=background_photo)
-    background_label.place(relx=0, rely=0, relwidth=1, relheight=1)
-
-    # Make sure other widgets are stacked above the background label
-    background_label.lower()
-
-# Bind the function to the <Configure> event of the content_frame
-content_frame.bind("<Configure>", load_background_image)
+# Load the background image
+bg_image = tk.PhotoImage(file="./assets/greentick.png")  # Path to your background image
+canvas.create_image(0, 0, image=bg_image, anchor="nw")
 
 
 # Create a frame for the header with a specified height and inverted colors
-header_frame = ttk.Frame(content_frame, height=100)
+header_frame = ttk.Frame(canvas, height=100)
 header_frame.pack(fill='x')
 
 # Create the main label with inverted colors
@@ -656,11 +640,11 @@ welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 # Adjust position of the main label to create the shadow effect
 welcome_label.lift() 
 
-separator = ttk.Separator(content_frame, orient='horizontal')
+separator = ttk.Separator(canvas, orient='horizontal')
 separator.pack(fill='x', padx=20, pady=20)
 
 # Create a frame for the course details
-course_d_frame = ttk.Frame(content_frame, padding=10, borderwidth=2, relief="solid", height=400, width=400)
+course_d_frame = ttk.Frame(canvas, padding=10, borderwidth=2, relief="solid", height=400, width=400)
 course_d_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
 
 # Add a meter showing the course completion progress
@@ -682,10 +666,10 @@ duration_label = ttk.Label(course_details_frame, text="Duration: 6 weeks", font=
 duration_label.grid(row=2, column=0, pady=5, sticky='w')
 
 # Separator between course details and recommendations
-separator = ttk.Separator(content_frame, orient='horizontal')
+separator = ttk.Separator(canvas, orient='horizontal')
 separator.pack(fill='x', padx=20, pady=20)
 
-recommendation_frame = Frame(content_frame)
+recommendation_frame = Frame(canvas)
 recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
 
 meter = Meter(
@@ -732,11 +716,10 @@ recommend_button.pack(pady=10)
 
 
 # Create a frame to act as the background image frame
-background_frame = ttk.Frame(content_frame)
-background_frame.pack(fill='both', expand=True)
+
 
 # Load the background image onto the background frame
-load_background_image(background_frame)
+
 
 # Create other frames and widgets as needed (including the sidebar, header, course details, recommendations, etc.)
 
