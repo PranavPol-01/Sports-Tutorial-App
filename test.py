@@ -118,7 +118,7 @@ def show_recommendation_cards(recommendations):
         recommendation_label.pack(fill="both", expand=True)
 
         # Add a button to navigate to the next page
-        navigate_button = ttk.Button(card_frame, text="Explore", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
+        navigate_button = ttk.Button(card_frame, text="Test", command=lambda sport=recommendation[0]: navigate_to_next_page(sport))
         navigate_button.pack(side="bottom", pady=10, padx=20)  # Increase padding for button
 
     # Add empty frames to fill in the empty grid spaces, ensuring proper alignment
@@ -170,7 +170,7 @@ def navigate_to_test():
 
 def navigate_to_explore():
     print("Navigating to explore page...")
-    subprocess.run(["python", "explore.py",current_user])
+    subprocess.run(["python", "calorie_entry.py",current_user])
 
 # Create a user interface with tkinter
 
@@ -212,7 +212,7 @@ sidebar_button1.pack(pady=5)
 sidebar_button2 = ttk.Button(sidebar_frame, text="Test", style="Sidebar.TButton",command=navigate_to_test)
 sidebar_button2.pack(pady=5)
 
-sidebar_button3 = ttk.Button(sidebar_frame, text="Explore", style="Sidebar.TButton",command=navigate_to_explore)
+sidebar_button3 = ttk.Button(sidebar_frame, text="Fitness", style="Sidebar.TButton",command=navigate_to_explore)
 sidebar_button3.pack(pady=5)
 
 # Create a frame for the content

@@ -75,7 +75,7 @@ import datetime
 from ttkbootstrap import Style
 import subprocess
 import sys
-
+current_user=sys.argv[1]
 
 
 # Create a SQLite database (or connect to an existing one)
