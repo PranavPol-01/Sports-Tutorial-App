@@ -137,7 +137,7 @@ def navigate_to_next_page(sport):
     if current_user is not None:
         # Run sports.py script with current user and selected sport as arguments
         #subprocess.Popen(["python", "sport.py", current_user, sport])
-        if sport =='badminton':
+        if sport =='Badminton':
             root.destroy()
             subprocess.run(['python','quiz.py', current_user])
     
@@ -162,7 +162,7 @@ def navigate_to_recommendation():
     root.destroy()
     subprocess.run(["python", "recommendation.py",current_user])
 
-def navigate_to_test(sport):
+def navigate_to_test():
     print("Navigating to test page...") 
      # Placeholder for navigation logic
     root.destroy()

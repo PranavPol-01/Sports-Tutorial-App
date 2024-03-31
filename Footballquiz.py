@@ -71,7 +71,7 @@ def navigate_to_recommendation():
     subprocess.run(["python", "recommendation.py", current_user])
 
 
-def navigate_to_test(sport):
+def navigate_to_test():
     print("Navigating to test page...") 
      # Placeholder for navigation logic
     root.destroy()

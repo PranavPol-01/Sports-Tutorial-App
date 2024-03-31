@@ -502,7 +502,7 @@ def show_recommendation_cards(recommendations):
             recommendation_text = "\n".join([recommendation_text[i:i+15] for i in range(0, len(recommendation_text), 15)])
 
         # Add a label to display the wrapped recommendation text
-        recommendation_label = ttk.Label(card_frame, text=recommendation_text, font=("helvetica", 16), anchor="center", wraplength=200)  # Center text and wrap
+        recommendation_label = ttk.Label(card_frame, text=recommendation_text, font=("helvetica", 16), anchor="center", wraplength=200,background=style.colors.dark,foreground=style.colors.light)  # Center text and wrap
         recommendation_label.pack(fill="both", expand=True)
 
         # Add a button to navigate to the next page
@@ -525,7 +525,7 @@ def navigate_to_next_page(sport):
     if current_user is not None:
         # Run sports.py script with current user and selected sport as arguments
         #subprocess.Popen(["python", "sport.py", current_user, sport])
-        if sport == "badminton":
+        if sport == "Badminton":
          root.destroy()
          subprocess.Popen(["python", "sport.py", current_user,'badminton'])
         else:
@@ -564,7 +564,7 @@ def navigate_to_recommendation():
     root.destroy()
     subprocess.run(["python", "recommendation.py",current_user])
 
-def navigate_to_test(sport):
+def navigate_to_test():
     print("Navigating to test page...") 
      # Placeholder for navigation logic
     root.destroy()
@@ -604,7 +604,7 @@ sidebar_frame = ttk.Frame(main_frame,padding=20,style="Inverted.TLabel", borderw
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
-sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
+sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16),background=style.colors.dark,foreground=style.colors.light)
 sidebar_label.pack(pady=10)
 button_width = 20
 
@@ -634,7 +634,7 @@ header_frame = ttk.Frame(canvas, height=100)
 header_frame.pack(fill='x')
 
 # Create the main label with inverted colors
-welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Arial', 35, 'bold'))
+welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Times New Roman', 35, 'bold'))
 welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
 # Adjust position of the main label to create the shadow effect
