@@ -255,15 +255,16 @@ def show_history():
         label.grid(row=3, column=i, padx=10, pady=20)
 
     # Display the entries in the table
-    for i, entry in enumerate(entries):
+   
+    for j, entry in enumerate(entries):
         name, calories = entry
 
         # Create labels for name and calories
         name_label = tk.Label(frame3, text=name,background="lightblue")
-        name_label.grid(row=i + 1, column=0, padx=5, pady=2)  # Adjust padding values
+        name_label.grid(row=j + 4, column=0, padx=5, pady=2)  # Adjust padding values
 
         calories_label = tk.Label(frame3, text=calories,background="lightblue")
-        calories_label.grid(row=i + 1, column=1, padx=5, pady=2)  # Adjust padding values
+        calories_label.grid(row=j + 4, column=1, padx=5, pady=2)  # Adjust padding values
 
     con.close()
  
@@ -410,7 +411,7 @@ calorie_label.grid(row=7, column=0, columnspan=2,pady=15)
 # Frame3 layout
 title_history.grid(row=0,column=0)
 history_label.grid(row=1,column=0)
-history_entry.grid(row=1,column=1)
+history_entry.grid(row=1,column=1,pady=20)
 show_history_btn.grid(row=2,column=0,columnspan=2)  
 
 # Frame4 layout
