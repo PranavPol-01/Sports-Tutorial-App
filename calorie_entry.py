@@ -96,11 +96,11 @@ def set_bg_image():
     desktop_width = window.winfo_screenwidth()
     desktop_height = window.winfo_screenheight()
 
-    image = Image.open("assets/sport_tut.jpg")
+    image = Image.open("assets/bg.jpg")
     image = image.resize((desktop_width, desktop_height))
 
-    alpha = Image.new('L', image.size, 99)  
-    image.putalpha(alpha)
+    blue_tint = Image.new('RGB', image.size, (173, 216, 230))  # Create a new image with a light blue color
+    image = Image.blend(image, blue_tint, 0.5)  # Blend the original image and the blue tint image
 
     photo = ImageTk.PhotoImage(image)
     bg_label.config(image=photo)
@@ -205,7 +205,7 @@ def show_calorie_table_info():
     # Create labels for table headers
     header_labels = ["Name", "Calories", "Image"]
     for i, header in enumerate(header_labels):
-        label = tk.Label(frame2, text=header, font=("Arial", 12, "bold"))
+        label = tk.Label(frame2, text=header, font=("Arial", 12, "bold"),background="lightblue")
         label.grid(row=0, column=i, padx=10, pady=20)
 
     # Retrieve all entries from the database
@@ -219,10 +219,10 @@ def show_calorie_table_info():
         image = entry[3]
 
         # Create labels for name and calories
-        name_label = tk.Label(frame2, text=name)
+        name_label = tk.Label(frame2, text=name,background="lightblue")
         name_label.grid(row=i+1, column=0, padx=10, pady=5)
 
-        calories_label = tk.Label(frame2, text=calories)
+        calories_label = tk.Label(frame2, text=calories,background="lightblue")
         calories_label.grid(row=i+1, column=1, padx=10, pady=5)
 
         # Create an image label
@@ -251,7 +251,7 @@ def show_history():
     # Create labels for table headers
     header_labels = ["Name", "Calories"]
     for i, header in enumerate(header_labels):
-        label = tk.Label(frame3, text=header, font=("Arial", 12, "bold"))
+        label = tk.Label(frame3, text=header, font=("Arial", 12, "bold"),background="lightblue")
         label.grid(row=3, column=i, padx=10, pady=20)
 
     # Display the entries in the table
@@ -259,10 +259,10 @@ def show_history():
         name, calories = entry
 
         # Create labels for name and calories
-        name_label = tk.Label(frame3, text=name)
+        name_label = tk.Label(frame3, text=name,background="lightblue")
         name_label.grid(row=i + 1, column=0, padx=5, pady=2)  # Adjust padding values
 
-        calories_label = tk.Label(frame3, text=calories)
+        calories_label = tk.Label(frame3, text=calories,background="lightblue")
         calories_label.grid(row=i + 1, column=1, padx=5, pady=2)  # Adjust padding values
 
     con.close()
@@ -325,54 +325,55 @@ def bmi_index(bmi):
 window = tk.Tk()
 window.title("Calorie Tracker")
 window.geometry("800x600")
-bg_label = tk.Label(window)
+# window.configure(background="lightblue")
+bg_label = tk.Label(window, bg="lightblue")
 bg_label.pack(fill="both", expand=True)
 set_bg_image()
 
 # Create a frame
-frame = tk.Frame(window)
-frame1 = tk.Frame(window)
-frame2 = tk.Frame(window)
-frame3 = tk.Frame(window)
-frame4 = tk.Frame(window)
+frame = tk.Frame(window, bg="lightblue")
+frame1 = tk.Frame(window, bg="lightblue")
+frame2 = tk.Frame(window, bg="lightblue")
+frame3 = tk.Frame(window, bg="lightblue")
+frame4 = tk.Frame(window, bg="lightblue")
 
 # Frame
-name_label = tk.Label(frame, text="Name:")
+name_label = tk.Label(frame, text="Name:",background="lightblue")
 name_entry = tk.Entry(frame)
-show_button = tk.Button(frame, text="Show Result", command=show_result)
-result_label = tk.Label(frame, text="")
+show_button = tk.Button(frame, text="Show Result", command=show_result,background="#0097B2",foreground="white")
+result_label = tk.Label(frame, text="",background="lightblue")
 
 # Frame1
-title = tk.Label(frame1, text="Calorie Counter")
-user_name = tk.Label(frame1, text="Your Name:")
+title = tk.Label(frame1, text="Calorie Counter",background="lightblue")
+user_name = tk.Label(frame1, text="Your Name:",background="lightblue")
 user_name_entry = tk.Entry(frame1)
-item1 = tk.Label(frame1, text="Food item 1:")
+item1 = tk.Label(frame1, text="Food item 1:",background="lightblue")
 item1_entry = tk.Entry(frame1)
-item2 = tk.Label(frame1, text="Food item 2:")
+item2 = tk.Label(frame1, text="Food item 2:",background="lightblue")
 item2_entry = tk.Entry(frame1)
-item3 = tk.Label(frame1, text="Food item 3:")
+item3 = tk.Label(frame1, text="Food item 3:",background="lightblue")
 item3_entry = tk.Entry(frame1)
-item4 = tk.Label(frame1, text ="Food item 4:")
+item4 = tk.Label(frame1, text ="Food item 4:",background="lightblue")
 item4_entry = tk.Entry(frame1)
-calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1)
-calorie_label = tk.Label(frame1, text="")
+calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1,background="#0097B2",foreground="white")
+calorie_label = tk.Label(frame1, text="",background="lightblue")
 
 # Frame3
-title_history = tk.Label(frame3, text="Know your calorie intake history")
-history_label = tk.Label(frame3, text="Enter the date :")
+title_history = tk.Label(frame3, text="Know your calorie intake history",background="lightblue")
+history_label = tk.Label(frame3, text="Enter the date :",background="lightblue")
 history_entry = tk.Entry(frame3)
-show_history_btn = tk.Button(frame3, text="Show History", command=show_history)
+show_history_btn = tk.Button(frame3, text="Show History", command=show_history,background="#0097B2",foreground="white")
 
 # Frame4
-bmi_title = tk.Label(frame4, text="BMI Calculator")
-bmi_name_label = tk.Label(frame4, text="Name:")
+bmi_title = tk.Label(frame4, text="BMI Calculator",background="lightblue")
+bmi_name_label = tk.Label(frame4, text="Name:",background="lightblue")
 bmi_name_entry = tk.Entry(frame4)
-weight_label = tk.Label(frame4, text="Weight (kg):")
+weight_label = tk.Label(frame4, text="Weight (kg):",background="lightblue")
 weight_entry = tk.Entry(frame4)
-height_label = tk.Label(frame4, text="Height (cm):")
+height_label = tk.Label(frame4, text="Height (cm):",background="lightblue")
 height_entry = tk.Entry(frame4)
-calculate_button = tk.Button(frame4, text="Calculate BMI", command=calculate_bmi)
-bmi_result_label = tk.Label(frame4, text="")
+calculate_button = tk.Button(frame4, text="Calculate BMI", command=calculate_bmi,background="#0097B2",foreground="white")
+bmi_result_label = tk.Label(frame4, text="",background="lightblue")
 
 
 # raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
