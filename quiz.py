@@ -330,7 +330,7 @@ sidebar_frame = ttk.Frame(root, padding=20, style="Inverted.TLabel", borderwidth
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
-sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
+sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16,'bold'),background=style.colors.dark,foreground=style.colors.light)
 sidebar_label.pack(pady=10)
 button_width = 20
 

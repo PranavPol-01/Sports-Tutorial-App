@@ -110,7 +110,7 @@ sidebar_frame = ttk.Frame(root, padding=20, style="Inverted.TLabel", borderwidth
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
-sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
+sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16,'bold'),background=style.colors.dark,foreground=style.colors.light)
 sidebar_label.pack(pady=10)
 button_width = 20
 
@@ -130,7 +130,7 @@ scrolled_frame = ScrolledFrame(root)
 scrolled_frame.pack(expand=True, fill='both', padx=20, pady=20)
 
 # Quiz label
-quiz_label = tk.Label(scrolled_frame, text="Football Quiz", font=("Helvetica", 22, "bold"))
+quiz_label = tk.Label(scrolled_frame, text="Football Quiz", font=("Helvetica", 22, "bold"),fg='#146C94')
 quiz_label.pack(pady=10)
 
 # Display all questions and options

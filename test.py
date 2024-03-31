@@ -114,7 +114,7 @@ def show_recommendation_cards(recommendations):
             recommendation_text = "\n".join([recommendation_text[i:i+15] for i in range(0, len(recommendation_text), 15)])
 
         # Add a label to display the wrapped recommendation text
-        recommendation_label = ttk.Label(card_frame, text=recommendation_text, font=("helvetica", 16), anchor="center", wraplength=200)  # Center text and wrap
+        recommendation_label = ttk.Label(card_frame, text=recommendation_text, font=("helvetica", 16), anchor="center", wraplength=200,background=style.colors.dark,foreground=style.colors.light)  # Center text and wrap
         recommendation_label.pack(fill="both", expand=True)
 
         # Add a button to navigate to the next page
@@ -202,7 +202,7 @@ sidebar_frame = ttk.Frame(main_frame,padding=20,style="Inverted.TLabel", borderw
 sidebar_frame.pack(side=tk.LEFT, fill=tk.Y)
 
 # Add components to the sidebar
-sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16))
+sidebar_label = ttk.Label(sidebar_frame, text="Navbar", font=("Arial", 16,'bold'),background=style.colors.dark,foreground=style.colors.light)
 sidebar_label.pack(pady=10)
 button_width = 20
 
@@ -221,49 +221,45 @@ content_frame.pack(fill=tk.BOTH, expand=tk.YES)
 # Function to load the background image
 canvas = tk.Canvas(content_frame, width=400, height=300)
 canvas.pack(fill="both", expand=True)
+# =========================================================================img bg
+# # Load the background image
+# bg_image = tk.PhotoImage(file="./assets/greentick.png")  # Path to your background image
+# canvas.create_image(0, 0, image=bg_image, anchor="nw")
 
-# Load the background image
-bg_image = tk.PhotoImage(file="./assets/greentick.png")  # Path to your background image
-canvas.create_image(0, 0, image=bg_image, anchor="nw")
-
+style.configure('My.TFrame', background='#AFD3E2')
 
 # Create a frame for the header with a specified height and inverted colors
-header_frame = ttk.Frame(canvas, height=100)
-header_frame.pack(fill='x')
+header_frame = ttk.Frame(canvas, height=100,style='My.TFrame')
+header_frame.pack(pady=10, anchor=tk.CENTER, expand=True)
 
 # Create the main label with inverted colors
-welcome_label = Label(header_frame, text="Test", font=('Arial', 35, 'bold'))
+welcome_label = Label(header_frame, text="SPORTS TUTORIAL APP", font=('Times New Roman', 35, 'bold'),foreground='#146C94',background='#AFD3E2', borderwidth=4, relief="solid")
 welcome_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+welcome_label.pack(pady=10,padx=10)
+# Create the main label with inverted colors
 
-# Adjust position of the main label to create the shadow effect
 welcome_label.lift() 
 
-separator = ttk.Separator(canvas, orient='horizontal')
-separator.pack(fill='x', padx=20, pady=20)
 
 
-
-recommendation_frame = Frame(canvas)
+# Use the style when creating the Frame
+recommendation_frame = ttk.Frame(canvas, style='My.TFrame')
 recommendation_frame.pack(fill=tk.BOTH, expand=tk.YES, padx=10, pady=10)
 
-
-
-
-instruction_label = ttk.Label(recommendation_frame, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16))
-instruction_label.pack(pady=10)
-
-
-title_label = ttk.Label(recommendation_frame, text="Select sport to give test", font=("Arial", 24))
+title_label = ttk.Label(recommendation_frame, text="Test Recommendation System", font=("Helvetica", 24),foreground='#146C94',background='#AFD3E2')
 title_label.pack(pady=20)
 
-age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 8-12)", "Teenagers (Ages 13-19)", "Young Adults (Ages 20-39)", "Middle-Aged Adults (Ages 40-59)", "Older Adults (Ages 60+)"], font=("Arial", 14), state="readonly")
+instruction_label = ttk.Label(recommendation_frame, text="Select an age group to see suitable sports recommended to you.", font=("Arial", 16),foreground='blue',background='#AFD3E2')
+instruction_label.pack(pady=10)
+
+age_group_combobox = ttk.Combobox(recommendation_frame, values=["Children (Ages 8-12)", "Teenagers (Ages 13-19)", "Young Adults (Ages 20-39)", "Middle-Aged Adults (Ages 40-59)", "Older Adults (Ages 60+)"], font=("Arial", 14), state="readonly",background='#AFD3E2')
 age_group_combobox.pack(pady=10)
 
-cards_frame = ttk.Frame(content_frame)
-cards_frame.pack(padx=10, pady=10)
+cards_frame = ttk.Frame(content_frame,style='My.TFrame')
+cards_frame.pack(padx=10, pady=10 ,fill=tk.BOTH, expand=tk.YES)
 
-recommendation_label = ttk.Label(recommendation_frame,wraplength=300, text="", font=("Arial", 14))
-recommendation_label.pack(pady=30)
+recommendation_label = ttk.Label(recommendation_frame,wraplength=300, text="", font=("Arial", 14),foreground='#146C94',background='#AFD3E2')
+recommendation_label.pack(pady=20)
 
 def show_recommendations():
     selected_age_group = age_group_combobox.get()
@@ -280,9 +276,6 @@ def show_recommendations():
 
 recommend_button = ttk.Button(recommendation_frame, text="Recommend", style="Sidebar.TButton", command=show_recommendations)
 recommend_button.pack(pady=10)
-
-
-
 # Create a frame to act as the background image frame
 
 
