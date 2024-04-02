@@ -526,10 +526,10 @@ def navigate_to_next_page(sport):
         # Run sports.py script with current user and selected sport as arguments
         #subprocess.Popen(["python", "sport.py", current_user, sport])
         if sport == "Badminton":
-         root.destroy()
+         
          subprocess.Popen(["python", "sport.py", current_user,'badminton'])
         else:
-         root.destroy()
+        #  root.destroy()
          subprocess.Popen(["python", "football.py", current_user,'football'])
 
         

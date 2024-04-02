@@ -122,7 +122,7 @@ def set_bg_image():
 #     conn.commit()
 
 def show_result():
-    name = name_entry.get()
+    name = current_user
 
     # Retrieve total calorie intake for the specified user
     cursor.execute("SELECT SUM(calories) FROM calorie_entries WHERE name=? and date=?", (name, datetime.datetime.now().date().isoformat()))
@@ -157,31 +157,62 @@ def enter_raw_data():
     conn.close()
 
 
+# def calorie_counter1():
+#     con = sqlite3.connect("calorie_counter.db")
+#     c1 = con.cursor()  
+#     meal_calories = 0
+#     meal_entries = [item1_entry.get(), item2_entry.get(), item3_entry.get(), item4_entry.get()]
+
+#     for meal in meal_entries:
+#         if meal:  # Check if the meal entry is not empty
+#             c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal,))
+#             result = c1.fetchone()
+#             if result:  # Check if the query result is not None
+#                 calorie_entry = int(result[0])
+#                 meal_calories += calorie_entry
+#             else:
+#                 print(f"No calorie information found for {meal}")
+#         else:
+#             print("Empty meal entry")
+
+#     print("Total meal calories:", meal_calories)
+#     calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
+#     con.close()
+#     # Starting the new cursor to point to the calorie_tracker.db
+#     conn = sqlite3.connect("tracker.db")
+#     cursor = conn.cursor()
+#     cursor.execute("INSERT INTO calorie_entries (name, calories, date) VALUES (?, ?,?)", (current_user, meal_calories,datetime.datetime.now().date().isoformat()))
+#     conn.commit()
+#     conn.close()
 def calorie_counter1():
     con = sqlite3.connect("calorie_counter.db")
-    c1 = con.cursor()  
+    c1 = con.cursor()
     meal_calories = 0
-    meal_entries = [item1_entry.get(), item2_entry.get(), item3_entry.get(), item4_entry.get()]
+    meal_entries = [(item1_entry.get(), quantity1_entry.get()),
+                    (item2_entry.get(), quantity2_entry.get()),
+                    (item3_entry.get(), quantity3_entry.get()),
+                    (item4_entry.get(), quantity4_entry.get())]
 
-    for meal in meal_entries:
-        if meal:  # Check if the meal entry is not empty
-            c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (meal,))
+    for item, quantity in meal_entries:
+        if item and quantity:  # Check if both item and quantity are not empty
+            c1.execute("SELECT calories FROM calorie_counter WHERE meal=?", (item,))
             result = c1.fetchone()
             if result:  # Check if the query result is not None
                 calorie_entry = int(result[0])
-                meal_calories += calorie_entry
+                meal_calories += calorie_entry * int(quantity)  # Multiply by quantity
             else:
-                print(f"No calorie information found for {meal}")
+                print(f"No calorie information found for {item}")
         else:
-            print("Empty meal entry")
+            print("Empty item or quantity")
 
     print("Total meal calories:", meal_calories)
     calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
     con.close()
-    # Starting the new cursor to point to the calorie_tracker.db
+
+    # Starting the new cursor to point to the tracker.db
     conn = sqlite3.connect("tracker.db")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO calorie_entries (name, calories, date) VALUES (?, ?,?)", (user_name_entry.get(), meal_calories,datetime.datetime.now().date().isoformat()))
+    cursor.execute("INSERT INTO calorie_entries (name, calories, date) VALUES (?, ?,?)", (current_user, meal_calories, datetime.datetime.now().date().isoformat()))
     conn.commit()
     conn.close()
 
@@ -262,7 +293,7 @@ def show_history():
     con = sqlite3.connect("tracker.db")
     c = con.cursor()
     date = history_entry.get()
-    name = name_entry.get()
+    name = current_user
     c.execute("SELECT name, calories FROM calorie_entries WHERE date=? AND name=?", (date, name))
     entries = c.fetchall()
     print(entries)
@@ -291,7 +322,8 @@ def show_history():
 def calculate_bmi():
     con = sqlite3.connect("bmi_tracker.db")
     cursor = con.cursor()
-    bmi_name = bmi_name_entry.get()
+    # bmi_name = bmi_name_entry.get()
+    bmi_name = current_user
     weight_kg = float(weight_entry.get())
     height_cm = float(height_entry.get())
 
@@ -375,25 +407,50 @@ frame3 = tk.Frame(window, bg="lightblue")
 frame4 = tk.Frame(window, bg="lightblue")
 
 # Frame
-name_label = tk.Label(frame, text="Name:",background="lightblue",font=("Arial", 12,'bold'))
-name_entry = tk.Entry(frame)
+name_label = tk.Label(frame, text="Total calories",background="lightblue",font=("Arial", 12,'bold'))
+# name_entry = tk.Entry(frame)
 show_button = tk.Button(frame, text="Show Result", command=show_result,background="#0097B2",foreground="white",font=("Arial", 12))
 result_label = tk.Label(frame, text="",background="lightblue",font=("Arial", 14),foreground='blue')
 
-# Frame1
-title = tk.Label(frame1, text="Calorie Counter",background="lightblue",font=("Arial", 12,'bold'))
-user_name = tk.Label(frame1, text="Your Name:",background="lightblue",font=("Arial", 12))
-user_name_entry = tk.Entry(frame1)
-item1 = tk.Label(frame1, text="Food item 1:",background="lightblue",font=("Arial", 12))
+# # Frame1
+# title = tk.Label(frame1, text="Calorie Counter",background="lightblue",font=("Arial", 12,'bold'))
+# # user_name = tk.Label(frame1, text="Your Name:",background="lightblue",font=("Arial", 12))
+# # user_name_entry = tk.Entry(frame1)
+# item1 = tk.Label(frame1, text="Food item 1:",background="lightblue",font=("Arial", 12))
+# item1_entry = tk.Entry(frame1)
+# item2 = tk.Label(frame1, text="Food item 2:",background="lightblue",font=("Arial", 12))
+# item2_entry = tk.Entry(frame1)
+# item3 = tk.Label(frame1, text="Food item 3:",background="lightblue",font=("Arial", 12))
+# item3_entry = tk.Entry(frame1)
+# item4 = tk.Label(frame1, text ="Food item 4:",background="lightblue",font=("Arial", 12))
+# item4_entry = tk.Entry(frame1)
+# calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1,background="#0097B2",foreground="white",font=("Arial", 12))
+# calorie_label = tk.Label(frame1, text="",background="lightblue",font=("Arial", 12),foreground='blue')
+title = tk.Label(frame1, text="Calorie Counter", background="lightblue", font=("Arial", 12, 'bold'))
+item1 = tk.Label(frame1, text="Food item 1:", background="lightblue", font=("Arial", 12))
 item1_entry = tk.Entry(frame1)
-item2 = tk.Label(frame1, text="Food item 2:",background="lightblue",font=("Arial", 12))
+quantity1 = tk.Label(frame1, text="Quantity:", background="lightblue", font=("Arial", 12))
+quantity1_entry = tk.Entry(frame1)
+
+item2 = tk.Label(frame1, text="Food item 2:", background="lightblue", font=("Arial", 12))
 item2_entry = tk.Entry(frame1)
-item3 = tk.Label(frame1, text="Food item 3:",background="lightblue",font=("Arial", 12))
+quantity2 = tk.Label(frame1, text="Quantity:", background="lightblue", font=("Arial", 12))
+quantity2_entry = tk.Entry(frame1)
+
+item3 = tk.Label(frame1, text="Food item 3:", background="lightblue", font=("Arial", 12))
 item3_entry = tk.Entry(frame1)
-item4 = tk.Label(frame1, text ="Food item 4:",background="lightblue",font=("Arial", 12))
+quantity3 = tk.Label(frame1, text="Quantity:", background="lightblue", font=("Arial", 12))
+quantity3_entry = tk.Entry(frame1)
+
+item4 = tk.Label(frame1, text="Food item 4:", background="lightblue", font=("Arial", 12))
 item4_entry = tk.Entry(frame1)
-calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1,background="#0097B2",foreground="white",font=("Arial", 12))
-calorie_label = tk.Label(frame1, text="",background="lightblue",font=("Arial", 12),foreground='blue')
+quantity4 = tk.Label(frame1, text="Quantity:", background="lightblue", font=("Arial", 12))
+quantity4_entry = tk.Entry(frame1)
+
+# Button and calorie label
+calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1, background="#0097B2", foreground="white", font=("Arial", 12))
+calorie_label = tk.Label(frame1, text="", background="lightblue", font=("Arial", 12), foreground='blue')
+
 
 # Frame3
 title_history = tk.Label(frame3, text="Know your calorie intake history",background="lightblue",font=("Arial", 12))
@@ -403,8 +460,8 @@ show_history_btn = tk.Button(frame3, text="Show History", command=show_history,b
 
 # Frame4
 bmi_title = tk.Label(frame4, text="BMI Calculator",background="lightblue",font=("Arial", 12))
-bmi_name_label = tk.Label(frame4, text="Name:",background="lightblue",font=("Arial", 12))
-bmi_name_entry = tk.Entry(frame4)
+# bmi_name_label = tk.Label(frame4, text="Name:",background="lightblue",font=("Arial", 12))
+# bmi_name_entry = tk.Entry(frame4)
 weight_label = tk.Label(frame4, text="Weight (kg):",background="lightblue",font=("Arial", 12))
 weight_entry = tk.Entry(frame4)
 height_label = tk.Label(frame4, text="Height (cm):",background="lightblue",font=("Arial", 12))
@@ -423,25 +480,48 @@ bmi_result_label = tk.Label(frame4, text="",background="lightblue",font=("Arial"
 
 # frame layout
 name_label.grid(row=0, column=0)
-name_entry.grid(row=0, column=1,pady=20)
+# name_entry.grid(row=0, column=1,pady=20)
 show_button.grid(row=3, column=0, columnspan=2)
 result_label.grid(row=4, column=0, columnspan=2,pady=15)
 
 
-# frame1 layout
-title.grid(row=0, column=0)
-user_name.grid(row=1, column=0)
-user_name_entry.grid(row=1, column=1,pady=10)
-item1.grid(row=2, column=0)
-item1_entry.grid(row=2, column=1,pady=10)
-item2.grid(row=3, column=0)
-item2_entry.grid(row=3, column=1,pady=10)
-item3.grid(row=4, column=0)
-item3_entry.grid(row=4, column=1,pady=10)
-item4.grid(row=5, column=0)
-item4_entry.grid(row=5, column=1,pady=10)
-calorie_counter_button.grid(row=6, column=0, columnspan=2)
-calorie_label.grid(row=7, column=0, columnspan=2,pady=15)
+# # frame1 layout
+# title.grid(row=0, column=0)
+# # user_name.grid(row=1, column=0)
+# # user_name_entry.grid(row=1, column=1,pady=10)
+# item1.grid(row=2, column=0)
+# item1_entry.grid(row=2, column=1,pady=10)
+# item2.grid(row=3, column=0)
+# item2_entry.grid(row=3, column=1,pady=10)
+# item3.grid(row=4, column=0)
+# item3_entry.grid(row=4, column=1,pady=10)
+# item4.grid(row=5, column=0)
+# item4_entry.grid(row=5, column=1,pady=10)
+# calorie_counter_button.grid(row=6, column=0, columnspan=2)
+# calorie_label.grid(row=7, column=0, columnspan=2,pady=15)
+title.grid(row=0, column=0, columnspan=2)
+item1.grid(row=1, column=0)
+item1_entry.grid(row=1, column=1)
+quantity1.grid(row=1, column=2)
+quantity1_entry.grid(row=1, column=3)
+
+item2.grid(row=2, column=0)
+item2_entry.grid(row=2, column=1)
+quantity2.grid(row=2, column=2)
+quantity2_entry.grid(row=2, column=3)
+
+item3.grid(row=3, column=0)
+item3_entry.grid(row=3, column=1)
+quantity3.grid(row=3, column=2)
+quantity3_entry.grid(row=3, column=3)
+
+item4.grid(row=4, column=0)
+item4_entry.grid(row=4, column=1)
+quantity4.grid(row=4, column=2)
+quantity4_entry.grid(row=4, column=3)
+
+calorie_counter_button.grid(row=5, column=0, columnspan=4)
+calorie_label.grid(row=6, column=0, columnspan=4, pady=15)
 
 
 # Frame3 layout
@@ -452,8 +532,8 @@ show_history_btn.grid(row=2,column=0,columnspan=2)
 
 # Frame4 layout
 bmi_title.grid(row=0, column=0)
-bmi_name_label.grid(row=1, column=0)
-bmi_name_entry.grid(row=1, column=1,pady=20)
+# bmi_name_label.grid(row=1, column=0)
+# bmi_name_entry.grid(row=1, column=1,pady=20)
 weight_label.grid(row=2, column=0)
 weight_entry.grid(row=2, column=1,pady=10)
 height_label.grid(row=3, column=0)
@@ -466,11 +546,11 @@ bmi_result_label.grid(row=5, column=0, columnspan=2,pady=15)
 show_calorie_table_info()
 
 # Pack the frame
-frame.place(x=200,y=50)
-frame1.place(x=200,y=200)
+frame.place(x=180,y=50)
+frame1.place(x=180,y=200)
 frame3.place(x=930,y=50)
 frame2.place(x=610,y=50)
-frame4.place(x=200,y=520)
+frame4.place(x=180,y=520)
 
 # Start the GUI event loop
 window.mainloop()
