@@ -72,9 +72,9 @@ import tkinter as tk
 import sqlite3
 from PIL import Image, ImageTk
 import datetime
-from ttkbootstrap import Style
 import subprocess
 import sys
+from tkcalendar import Calendar, DateEntry
 current_user=sys.argv[1]
 
 
@@ -292,7 +292,8 @@ def show_calorie_table_info():
 def show_history():
     con = sqlite3.connect("tracker.db")
     c = con.cursor()
-    date = history_entry.get()
+    # date = history_entry.get()
+    date = cal.get_date()
     name = current_user
     c.execute("SELECT name, calories FROM calorie_entries WHERE date=? AND name=?", (date, name))
     entries = c.fetchall()
@@ -318,7 +319,9 @@ def show_history():
         calories_label.grid(row=j + 4, column=1, padx=5, pady=2)  # Adjust padding values
 
     con.close()
- 
+
+     
+
 def calculate_bmi():
     con = sqlite3.connect("bmi_tracker.db")
     cursor = con.cursor()
@@ -427,6 +430,7 @@ result_label = tk.Label(frame, text="",background="lightblue",font=("Arial", 14)
 # calorie_counter_button = tk.Button(frame1, text="Calculate Calories", command=calorie_counter1,background="#0097B2",foreground="white",font=("Arial", 12))
 # calorie_label = tk.Label(frame1, text="",background="lightblue",font=("Arial", 12),foreground='blue')
 title = tk.Label(frame1, text="Calorie Counter", background="lightblue", font=("Arial", 12, 'bold'))
+title.pack(pady=20)
 item1 = tk.Label(frame1, text="Food item 1:", background="lightblue", font=("Arial", 12))
 item1_entry = tk.Entry(frame1)
 quantity1 = tk.Label(frame1, text="Quantity:", background="lightblue", font=("Arial", 12))
@@ -453,11 +457,25 @@ calorie_label = tk.Label(frame1, text="", background="lightblue", font=("Arial",
 
 
 # Frame3
-title_history = tk.Label(frame3, text="Know your calorie intake history",background="lightblue",font=("Arial", 12))
-history_label = tk.Label(frame3, text="Enter the date :",background="lightblue",font=("Arial", 12))
-history_entry = tk.Entry(frame3)
-show_history_btn = tk.Button(frame3, text="Show History", command=show_history,background="#0097B2",foreground="white",font=("Arial", 12))
+# title_history = tk.Label(frame3, text="Know your calorie intake history",background="lightblue",font=("Arial", 12))
+# history_label = tk.Label(frame3, text="Enter the date :",background="lightblue",font=("Arial", 12))
+# history_entry = tk.Entry(frame3)
+# show_history_btn = tk.Button(frame3, text="Show History", command=show_history,background="#0097B2",foreground="white",font=("Arial", 12))
+title_history = tk.Label(frame3, text="Know your calorie intake history", background="lightblue", font=("Arial", 12))
+title_history.grid(row=0, column=0, padx=10, pady=10)
 
+# Define the label for choosing a date
+history_label = tk.Label(frame3, text="Choose a Date", background='gray61', foreground="white")
+history_label.grid(row=1, column=0, padx=10, pady=10)
+
+# Create a Calendar using DateEntry
+cal = DateEntry(frame3, width=16, background="magenta3", foreground="white", bd=2)
+cal.grid(row=2, column=0, padx=10, pady=10)
+
+# Define the button to show history
+show_history_btn = tk.Button(frame3, text="Show History", command=show_history, background="#0097B2",
+                             foreground="white", font=("Arial", 12))
+show_history_btn.grid(row=3, column=0, padx=10, pady=10)
 # Frame4
 bmi_title = tk.Label(frame4, text="BMI Calculator",background="lightblue",font=("Arial", 12))
 # bmi_name_label = tk.Label(frame4, text="Name:",background="lightblue",font=("Arial", 12))
@@ -499,36 +517,42 @@ result_label.grid(row=4, column=0, columnspan=2,pady=15)
 # item4_entry.grid(row=5, column=1,pady=10)
 # calorie_counter_button.grid(row=6, column=0, columnspan=2)
 # calorie_label.grid(row=7, column=0, columnspan=2,pady=15)
-title.grid(row=0, column=0, columnspan=2)
-item1.grid(row=1, column=0)
-item1_entry.grid(row=1, column=1)
-quantity1.grid(row=1, column=2)
-quantity1_entry.grid(row=1, column=3)
+title.grid(row=0, column=0, columnspan=2, pady=10)
+item1.grid(row=1, column=0, pady=10)
+item1_entry.grid(row=1, column=1, pady=10)
+quantity1.grid(row=1, column=2, pady=10)
+quantity1_entry.grid(row=1, column=3, pady=10)
 
-item2.grid(row=2, column=0)
-item2_entry.grid(row=2, column=1)
-quantity2.grid(row=2, column=2)
-quantity2_entry.grid(row=2, column=3)
+item2.grid(row=2, column=0, pady=10)
+item2_entry.grid(row=2, column=1, pady=10)
+quantity2.grid(row=2, column=2, pady=10)
+quantity2_entry.grid(row=2, column=3, pady=10)
 
-item3.grid(row=3, column=0)
-item3_entry.grid(row=3, column=1)
-quantity3.grid(row=3, column=2)
-quantity3_entry.grid(row=3, column=3)
+item3.grid(row=3, column=0, pady=10)
+item3_entry.grid(row=3, column=1, pady=10)
+quantity3.grid(row=3, column=2, pady=10)
+quantity3_entry.grid(row=3, column=3, pady=10)
 
-item4.grid(row=4, column=0)
-item4_entry.grid(row=4, column=1)
-quantity4.grid(row=4, column=2)
-quantity4_entry.grid(row=4, column=3)
+item4.grid(row=4, column=0, pady=10)
+item4_entry.grid(row=4, column=1, pady=10)
+quantity4.grid(row=4, column=2, pady=10)
+quantity4_entry.grid(row=4, column=3, pady=10)
 
-calorie_counter_button.grid(row=5, column=0, columnspan=4)
-calorie_label.grid(row=6, column=0, columnspan=4, pady=15)
+calorie_counter_button.grid(row=5, column=0, columnspan=4, pady=5)
+calorie_label.grid(row=6, column=0, columnspan=4, pady=5)
 
 
-# Frame3 layout
-title_history.grid(row=0,column=0)
-history_label.grid(row=1,column=0)
-history_entry.grid(row=1,column=1,pady=20)
-show_history_btn.grid(row=2,column=0,columnspan=2)  
+
+# # Frame3 layout
+# title_history.grid(row=0,column=0)
+# history_label.grid(row=1,column=0)
+# history_entry.grid(row=1,column=1,pady=20)
+# show_history_btn.grid(row=2,column=0,columnspan=2)  
+title_history.grid(row=0, column=0, padx=0, pady=10)
+history_label.grid(row=1, column=0, padx=10, pady=10)
+cal.grid(row=2, column=0, padx=10, pady=10)
+show_history_btn.grid(row=2, column=1, padx=10, pady=10)
+
 
 # Frame4 layout
 bmi_title.grid(row=0, column=0)
@@ -550,7 +574,7 @@ frame.place(x=180,y=50)
 frame1.place(x=180,y=200)
 frame3.place(x=930,y=50)
 frame2.place(x=610,y=50)
-frame4.place(x=180,y=520)
+frame4.place(x=210,y=510)
 
 # Start the GUI event loop
 window.mainloop()
