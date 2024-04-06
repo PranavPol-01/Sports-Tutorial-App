@@ -33,7 +33,7 @@ window.geometry("1000x700")
 
 engine = pyttsx3.init()
 engine.setProperty('rate', 150)  # Speed of speech
-engine.setProperty('volume', 0.2)
+engine.setProperty('volume', 0.8)
 
 stop_speech_flag = False
 
@@ -105,6 +105,7 @@ print("Database created")
 
 username = sys.argv[1]
 sprt = sys.argv[2]
+print(username)
 
 # iterate over sports data and create a page for each column in db
 

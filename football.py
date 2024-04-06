@@ -13,8 +13,9 @@ import subprocess
 import pyttsx3  # Import the pyttsx3 library
 import threading
 from ttkbootstrap.scrolled import ScrolledFrame
-username = sys.argv[0]
-sprt = sys.argv[1]
+username = sys.argv[1]
+sprt = sys.argv[2]
+print(username)
 
 # engine = pyttsx3.init()
 
@@ -43,7 +44,7 @@ window.geometry('925x500+300+200')
 
 engine = pyttsx3.init()
 engine.setProperty('rate', 150)  # Speed of speech
-engine.setProperty('volume', 0.2)
+engine.setProperty('volume', 0.8)
 
 stop_speech_flag = False
 

@@ -76,6 +76,7 @@ import subprocess
 import sys
 from tkcalendar import Calendar, DateEntry
 current_user=sys.argv[1]
+print(current_user)
 
 
 # Create a SQLite database (or connect to an existing one)
