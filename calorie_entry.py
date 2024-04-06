@@ -74,7 +74,8 @@ from PIL import Image, ImageTk
 import datetime
 import subprocess
 import sys
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import  DateEntry
+import tkinter.messagebox
 current_user=sys.argv[1]
 print(current_user)
 
@@ -129,7 +130,11 @@ def show_result():
     cursor.execute("SELECT SUM(calories) FROM calorie_entries WHERE name=? and date=?", (name, datetime.datetime.now().date().isoformat()))
     total_calories = cursor.fetchone()[0]
     print(total_calories)
-    result_label.config(text=f"Total calories of a day for {name}: {total_calories} kcal")
+    # result_label.config(text=f"Total calories of a day for {name}: {total_calories} kcal")
+    result_text = f"Total calories of a day for {name}: {total_calories} kcal"
+
+    # Show the text in a popup
+    tkinter.messagebox.showinfo("Calorie Intake Result", result_text)
 
 def enter_raw_data():
     conn = sqlite3.connect("calorie_counter.db")
@@ -207,7 +212,8 @@ def calorie_counter1():
             print("Empty item or quantity")
 
     print("Total meal calories:", meal_calories)
-    calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
+    # calorie_label.config(text=f"Total calories from the meal: {meal_calories} kcal")
+    tkinter.messagebox.showinfo("Meal Calories", f"Total calories from the meal: {meal_calories} kcal")
     con.close()
 
     # Starting the new cursor to point to the tracker.db
@@ -409,6 +415,7 @@ frame1 = tk.Frame(window, bg="lightblue")
 frame2 = tk.Frame(window, bg="lightblue")
 frame3 = tk.Frame(window, bg="lightblue")
 frame4 = tk.Frame(window, bg="lightblue")
+frame5 = tk.Frame(window, bg="lightblue")
 
 # Frame
 name_label = tk.Label(frame, text="Total calories",background="lightblue",font=("Arial", 12,'bold'))
@@ -462,7 +469,7 @@ calorie_label = tk.Label(frame1, text="", background="lightblue", font=("Arial",
 # history_label = tk.Label(frame3, text="Enter the date :",background="lightblue",font=("Arial", 12))
 # history_entry = tk.Entry(frame3)
 # show_history_btn = tk.Button(frame3, text="Show History", command=show_history,background="#0097B2",foreground="white",font=("Arial", 12))
-title_history = tk.Label(frame3, text="Know your calorie intake history", background="lightblue", font=("Arial", 12))
+title_history = tk.Label(frame3, text="Know your calorie intake history", background="lightblue", font=("Arial", 12,'bold'))
 title_history.grid(row=0, column=0, padx=10, pady=10)
 
 # Define the label for choosing a date
@@ -478,7 +485,7 @@ show_history_btn = tk.Button(frame3, text="Show History", command=show_history, 
                              foreground="white", font=("Arial", 12))
 show_history_btn.grid(row=3, column=0, padx=10, pady=10)
 # Frame4
-bmi_title = tk.Label(frame4, text="BMI Calculator",background="lightblue",font=("Arial", 12))
+bmi_title = tk.Label(frame4, text="BMI Calculator",background="lightblue",font=("Arial", 12,'bold'))
 # bmi_name_label = tk.Label(frame4, text="Name:",background="lightblue",font=("Arial", 12))
 # bmi_name_entry = tk.Entry(frame4)
 weight_label = tk.Label(frame4, text="Weight (kg):",background="lightblue",font=("Arial", 12))
@@ -486,7 +493,7 @@ weight_entry = tk.Entry(frame4)
 height_label = tk.Label(frame4, text="Height (cm):",background="lightblue",font=("Arial", 12))
 height_entry = tk.Entry(frame4)
 calculate_button = tk.Button(frame4, text="Calculate BMI", command=calculate_bmi,background="#0097B2",foreground="white",font=("Arial", 12))
-bmi_result_label = tk.Label(frame4, text="",background="lightblue",font=("Arial", 12),foreground='blue')
+bmi_result_label = tk.Label(frame5, text="",background="lightblue",font=("Helvetica", 12,),foreground='darkblue')
 
 
 # raw_data=tk.Button(frame1,text='Enter raw data',command=enter_raw_data)
@@ -564,18 +571,19 @@ weight_entry.grid(row=2, column=1,pady=10)
 height_label.grid(row=3, column=0)
 height_entry.grid(row=3, column=1,pady=10)
 calculate_button.grid(row=4, column=0, columnspan=2)
-bmi_result_label.grid(row=5, column=0, columnspan=2,pady=15)
+# bmi_result_label.grid(row=1, column=10, columnspan=2,pady=15)
 
-
+bmi_result_label.grid(row=0, column=0, columnspan=2, pady=10)
 # enter_raw_data()--> Frame2
 show_calorie_table_info()
 
 # Pack the frame
-frame.place(x=180,y=50)
+frame.place(x=180,y=80)
 frame1.place(x=180,y=200)
 frame3.place(x=930,y=50)
 frame2.place(x=610,y=50)
 frame4.place(x=210,y=510)
+frame5.place(x=610,y=510)
 
 # Start the GUI event loop
 window.mainloop()
